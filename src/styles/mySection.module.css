@@ -1,0 +1,35 @@
+
+.mySection {
+    padding: var(--my-margin-s) var(--my-margin-s);
+}
+
+/* 角丸 */
+.borderRadiusS {
+    border-radius: var(--my-border-radius-m);
+}
+.borderRadiusM {
+    border-radius: var(--my-border-radius-m);
+}
+
+/* 背景色の設定 */
+.bgLight {
+    background-color: var(--my-color-white);
+}
+.bgDark {
+    background-color: var(--my-color-navy);
+}
+
+/* タイトル */
+.mySection .title {
+    border-bottom: solid 1px var(--my-color-gray);
+    padding-bottom: var(--my-margin-xs);
+    margin-bottom: var(--my-margin-xs);
+    font-weight: bold;
+}
+
+.bgLight .title {
+    color: var(--my-color-navy);
+}
+.bgDark .title {
+    color: var(--my-color-lightGray);
+}

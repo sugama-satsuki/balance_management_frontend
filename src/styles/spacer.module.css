@@ -1,0 +1,20 @@
+
+.spacerXs {
+    margin-top: var(--my-margin-xs);
+}
+
+.spacerS {
+    margin-top: var(--my-margin-s);
+}
+
+.spacerM {
+    margin-top: var(--my-margin-m);
+}
+
+.spacerL {
+    margin-top: var(--my-margin-l);
+}
+
+.spacerXL {
+    margin-top: var(--my-margin-xl);
+}

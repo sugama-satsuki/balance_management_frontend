@@ -1,0 +1,116 @@
+:root {
+  /* color */
+  --my-color-blue: #359AE1;
+  --my-color-bgColor: #ECEBEC;
+  --my-color-navy: #0f0f33;
+  --my-color-gray: #666;
+  --my-color-lightGray: #DEDBEB;
+  --my-color-white: #fff;
+  --my-color-pink: #E54781;
+  --my-color-red: #ff6347;
+  --my-color-orange: #F5AD31;
+  --my-color-purple: #845CB7;
+  --my-color-green: #3cb371;
+  --my-color-bgBlur: rgba(0, 0, 0, 0.3);
+
+  /* size */
+  --my-size-sideMenuCloseW: 3.5rem;
+  --my-size-sideMenuOpenW: 16rem;
+  --my-size-headerH: 4rem;
+  --my-size-fromWidget: 2.5rem;
+  --my-size-icon: 24px;
+  --my-size-popup-width-s: 200px;
+  --my-size-popup-height-s: 300px;
+  --my-size-popup-width-m: 400px;
+  --my-size-popup-height-m: 500px;
+  --my-size-popup-width-l: 600px;
+  --my-size-popup-height-l: 700px;
+  --my-size-tableCell-width-s: 48px;
+  --my-size-tableCell-width-m: 64px;
+  --my-size-tableCell-width-l: 112px;
+  --my-size-tableCell-width-xl: 270px;
+  --my-size-tableCell-width-xxl: 540px;
+  --my-size-login-inner-height: 440px;
+  --my-size-login-inner-width: 460px;
+  --my-size-login-inner-height-l: 560px;
+  --my-size-msgBnr-width: 420px;
+
+
+  /* space: margin */
+  --my-margin-xs: 8px;
+  --my-margin-s: 16px;
+  --my-margin-m: 32px;
+  --my-margin-l: 48px;
+  --my-margin-xl: 64px;
+
+  /* space: padding */
+  --my-padding-xs: 4px;
+  --my-padding-s: 8px;
+  --my-padding-m: 16px;
+  --my-padding-l: 24px;
+  --my-padding-xl: 32px;
+
+  /* border-radius */
+  --my-border-radius-none: 0px;
+  --my-border-radius-s: 4px;
+  --my-border-radius-m: 8px;
+  --my-border-radius-rounded: 100px;
+  --my-border-radius-circle: 100%;
+
+  /* font-size */
+  --my-font-size-big: 32px;
+  --my-font-size-h1: 24px;
+  --my-font-size-h2: 18px;
+  --my-font-size-p: 14px;
+  --my-font-size-smallP: 12px;
+  
+}
+
+
+h1, h2, h3, h4, p, div, a {
+  margin: 0;
+  padding: 0;
+  letter-spacing: 1px;
+  color: var(--my-color-navy);
+}
+
+p, div, a {
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+/* color: font */
+.green {
+  color: var(--my-color-green);
+}
+.red {
+  color: var(--my-color-red);
+}
+.pink {
+  color: var(--my-color-pink);
+}
+.purple {
+  color: var(--my-color-purple);
+}
+
+/* color: border */
+.border-pink {
+  border-color: var(--my-color-pink);
+}
+.border-pink {
+  border-color: var(--my-color-purple);
+}
+
+
+
+/* show or hide */
+.displayBlock {
+  display: block;
+}
+.displayNone {
+  display: none;
+}

@@ -1,0 +1,21 @@
+.tabs {
+
+}
+
+.tabs button {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: var(--my-font-size-smallP);
+    padding: var(--my-padding-xs) var(--my-padding-m);
+    color: var(--my-color-gray);
+    transition: all 0.3s;
+}
+
+.tabs .isSelect {
+    border-bottom-style: solid;
+    border-bottom-width: 4px;
+    padding: var(--my-padding-xs) var(--my-padding-m);
+    color: var(--my-color-navy);
+    font-weight: bold;
+    transition: all 0.3s;
+}

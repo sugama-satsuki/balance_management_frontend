@@ -1,0 +1,20 @@
+
+
+.radio_group {
+    display: flex;
+    justify-content: left;
+}
+
+/* 縦並び */
+.flex_column { 
+    flex-direction: column;
+}
+/* 横並び */
+.flex_row {
+    flex-direction: row;
+}
+
+
+.radio_group input[type='radio']:not(:first-child){
+    margin-left: var(--my-margin-xs);
+}

@@ -1,0 +1,59 @@
+.myTable {
+    width: 100%;
+    border-spacing: 0;
+}
+.myTable .row{
+    padding: 0;
+    border-radius: var(--my-border-radius-s);
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    overflow: hidden;
+}
+.myTable .row div{
+    text-align: center;
+    box-sizing: border-box;
+}
+.myTable .row .tableHeader{
+    padding: calc(var(--my-padding-xs) + 2px) var(--my-padding-xs) var(--my-padding-xs);
+    border-bottom: solid 1px var(--my-color-gray);
+    color: var(--my-color-white);
+    background-color: var(--my-color-navy);
+    font-weight: bold;
+}
+.myTable .row .cell{
+    padding: var(--my-padding-m) var(--my-padding-s);
+    border-bottom: solid 1px var(--my-color-lightGray);
+    color: var(--my-color-navy);
+}
+
+.myTable .row:hover{
+    background-color: var(--my-color-lightGray);
+    border-radius: var(--my-border-radius-s);
+}
+
+.headCheckboxCell {
+    padding: var(--my-padding-s) !important;
+}
+
+
+
+.cellS {
+    width: var(--my-size-tableCell-width-s);
+}
+.cellM {
+    width: var(--my-size-tableCell-width-m);
+}
+.cellL {
+    width: var(--my-size-tableCell-width-l);
+}
+.cellXl {
+    width: var(--my-size-tableCell-width-xl);
+}
+.cellXxl {
+    width: var(--my-size-tableCell-width-xxl);
+}
+.cellFill {
+    width: 100%;
+}
+

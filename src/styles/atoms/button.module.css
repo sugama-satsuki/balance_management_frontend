@@ -1,0 +1,32 @@
+
+/* --- square button --- */
+.squareButton {
+    border-radius: var(--my-border-radius-s);
+    padding: var(--my-padding-s) var(--my-padding-m);
+    color: var(--my-color-white);
+    border: none;
+    font-size: var(--my-font-size-p);
+}
+.primary {
+    background-color: var(--my-color-pink);
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+.primary:hover {
+    opacity: 0.8;
+    transition: opacity 0.5s;
+}
+
+.secondary {
+    background-color: var(--my-color-purple);
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+.secondary:hover {
+    opacity: 0.8;
+    transition: opacity 0.5s;
+}
+
+.fill {
+    width: 100%;
+}

@@ -1,0 +1,64 @@
+.sideMenuButton {
+    width: calc(100% - 2rem);
+    overflow: hidden;
+    opacity: 1;
+    transition: all 0.5s;
+    margin: 0 auto 0.2rem;
+    height: 2.5rem;
+}
+.sideMenuButton:hover {
+    opacity: 1;
+    transition: all 0.5s;
+}
+.sideMenuButton a {
+    color: var(--my-color-white);
+    font-weight: bold;
+}
+
+
+
+/* --- ボタン表示/非表示 --- */
+/* メニューが開いている時 */
+.btnOpen a{
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    padding: calc((2.5rem - 1.5rem) / 2) 1rem;
+}
+.btnOpen .buttonText {
+    opacity: 1;
+    transition: all 0.5s;
+    margin-left: 1rem;
+}
+
+/* メニューが閉じている時 */
+.btnClose {
+    width: 2.5rem;
+    padding: 0;
+    margin: auto;
+}
+.btnClose .buttonText{
+    opacity: 0;
+    transition: all 0.5s;
+}
+.btnClose svg{
+    font-size: 1.5rem;
+    display: block;
+    margin: calc((2.5rem - 1.5rem) / 2) auto;
+}
+/* --- ▲ ボタン表示/非表示 ▲ --- */
+
+
+/* --- ▼ ボタン選択/非選択 ▼ --- */
+/* 選択時 */
+.btnSelect {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: var(--my-border-radius-s);
+    margin: var(--my-margin-xs) auto;
+}
+/* 非選択時 */
+.btnNotSelect {
+    background-color: rgba(255, 255, 255, 0);
+    opacity: 0.35;
+}
+/* --- ▲ ボタン選択/非選択 ▲ --- */

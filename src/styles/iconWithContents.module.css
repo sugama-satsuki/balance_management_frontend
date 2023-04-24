@@ -1,0 +1,32 @@
+.iconWithTitleWrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    padding: var(--my-padding-xs) 0;
+}
+
+.iconWithTitleWrapper .icon {
+    margin-right: var(--my-margin-s);
+    font-size: var(--my-size-icon);
+    width: calc(var(--my-size-icon) + var(--my-padding-s)*2);
+    height: calc(var(--my-size-icon) + var(--my-padding-s)*2);
+    box-sizing: border-box;
+}
+.iconColorPrimary {
+    color: var(--my-color-pink);
+}
+.iconColorSecondary {
+    color: var(--my-color-purple);
+}
+
+.iconWithTitleWrapper .circleIcon {
+    border-radius: var(--my-border-radius-circle);
+    padding: var(--my-padding-s);
+    color: var(--my-color-white);
+}
+.iconBgColorPrimary {
+    background-color: var(--my-color-pink);
+}
+.iconBgColorSecondary {
+    background-color: var(--my-color-purple);
+}

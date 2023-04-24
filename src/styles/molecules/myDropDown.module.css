@@ -1,0 +1,8 @@
+
+.my_dropdown {
+    padding: var(--my-padding-s);
+    width: 100%;
+    box-sizing: border-box;
+    border: solid 1px var(--my-color-lightGray);
+    border-radius: var(--my-border-radius-s);
+}

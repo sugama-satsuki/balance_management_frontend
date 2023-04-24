@@ -1,0 +1,21 @@
+.listWrapper {
+    width: 100%;
+}
+
+.btnWrapper {
+    display: flex;
+    justify-content: right;
+    box-sizing: border-box;
+}
+.btnWrapper label {
+    margin-right: var(--my-margin-s);
+}
+
+.headArea {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.selectWrapper {
+    width: 200px;
+}

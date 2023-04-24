@@ -1,0 +1,24 @@
+.main {
+}
+.mainContentsWrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: var(--my-color-bgColor);
+  width: calc(100% - var(--my-size-sideMenuCloseW));
+  height: 100%;
+  z-index: 1;
+}
+.mainContentInner {
+  position: absolute;
+  top: var(--my-size-headerH);
+  right: 0;
+  width: 100%;
+  height: calc(100% - var(--my-size-headerH));
+  overflow: scroll;
+  padding: 2rem 0;
+  box-sizing: border-box;
+}
+.mainContentInner::-webkit-scrollbar{
+  display:none;
+}

@@ -1,0 +1,20 @@
+.myCard {
+    border-radius: 0.4rem;
+    padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.5s;
+}
+
+.myCard:hover {
+    /* margin-top: -0.4rem; */
+    /* transition: all 0.5s;
+    opacity: 0.8; */
+}
+
+.dark {
+    background-color: var(--my-color-gray);
+}
+.light {
+    background-color: var(--my-color-white);
+}

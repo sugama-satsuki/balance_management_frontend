@@ -1,0 +1,38 @@
+
+.msgBnr {
+    position: fixed;
+    top: 16px;
+    left: calc((100vw - var(--my-size-msgBnr-width)) / 2);
+    transition: all 0.5s;
+    border-radius: var(--my-border-radius-s);
+    width: var(--my-size-msgBnr-width);
+    padding: var(--my-padding-m);
+    font-size: var(--my-font-size-p);
+    z-index: 101;
+    font-weight: bold;
+    display: flex;
+}
+.msgBnr > .icon {
+    margin-right: var(--my-margin-s);
+}
+
+
+/* bg font color */
+.errorColor {
+    background-color: var(--my-color-red);
+    color: var(--my-color-white);
+}
+.successColor {
+    background-color: var(--my-color-green);
+    color: var(--my-color-navy);
+}
+
+/* show or hide */
+.show {
+    top: 16px;
+    transition: all 0.5s;
+}
+.hide {
+    top: -50vh;
+    transition: all 0.5s;
+}

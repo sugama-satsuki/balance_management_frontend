@@ -1,0 +1,57 @@
+
+
+.my_calender {
+    position: relative;
+    height: auto;
+}
+
+/* input boxエリア */
+.my_calender > .inputArea_wrapper {
+    position: relative;
+    height: auto;
+    width: 100%;
+    display: flex;
+    padding: var(--my-padding-s);
+    width: 100%;
+    box-sizing: border-box;
+    border: solid 1px var(--my-color-lightGray);
+    border-radius: var(--my-border-radius-s);
+    justify-content: space-between;
+}
+
+/* カレンダーエリア */
+.my_calender > .calenderArea_wrapper {
+    position: absolute;
+    padding: var(--my-padding-xs);
+    border-radius: var(--my-border-radius-s);
+    background-color: var(--my-color-bgColor);
+    z-index: 10;
+}
+/* カレンダー表示/非表示 */
+.calender_hidden {
+    display: none;
+}
+.calender_show {
+    display: block;
+    top: calc(var(--my-font-size-p) + (var(--my-padding-s) * 2) + 10px);
+    left: 0;
+}
+
+
+.my_calender > .inputArea_wrapper > .input {
+    border: none;
+    width: calc(100% - var(--my-font-size-h2));
+    outline: none;
+    color: var(--my-color-navy);
+}
+
+.my_calender > .inputArea_wrapper > .icon {
+    font-size: var(--my-font-size-h2);
+    color: var(--my-color-navy);
+    opacity: 1;
+    transition: all 0.5s;
+}
+.my_calender > .inputArea_wrapper > .icon:hover {
+    opacity: 0.5;
+    transition: all 0.5s;
+}

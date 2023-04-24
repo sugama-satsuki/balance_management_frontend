@@ -1,0 +1,20 @@
+
+.listWrapper {
+    padding: 0;
+}
+
+.listWrapper li {
+    padding: 0.5rem 1rem;
+    border-radius: 0.2rem;
+    background-color: var(--my-color-bgColor);
+    list-style: none;
+    margin-bottom: 0.5rem;
+    color: var(--my-color-navy);
+    transition: all 0.5s;
+}
+
+.listWrapper li:hover {
+    background-color: var(--my-color-primary);
+    color: var(--my-color-white);
+    transition: all 0.5s;
+}

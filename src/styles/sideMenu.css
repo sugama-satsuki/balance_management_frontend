@@ -1,0 +1,164 @@
+.sideMenu {
+    background-color: var(--my-color-navy);
+    height: 100vh;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+.sideMenu .sideMenuInnerWrapper {
+    width: 100%;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 6rem;
+}
+
+.sideMenuOpen  {
+    width: var(--my-size-sideMenuOpenW);
+    transition: all 0.5s;
+}
+
+.sideMenuClose {
+    width: var(--my-size-sideMenuCloseW);
+    transition: all 0.5s;
+}
+
+
+
+/* メニュー開け閉めボタン */
+.sideMenu .sideMenuInnerWrapper .menuIcon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+}
+.sideMenu .sideMenuInnerWrapper .menuIcon span{
+    height: 0.2rem;
+    background-color: var(--my-color-white);
+    border-radius: 0.5rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* メニュー開け閉めボタン（閉じてる時） */
+.sideMenuClose .sideMenuInnerWrapper .menuIcon{
+    right: calc((3.5rem - 2rem)/2);
+}
+.sideMenuClose .sideMenuInnerWrapper .menuIcon span{
+    transform: rotate(0deg);
+    transition: all 0.5s;
+    margin-top: 1rem;
+}
+.sideMenuClose .sideMenuInnerWrapper .menuIcon span:nth-child(2){
+    margin-top: 0;
+}
+
+/* メニュー開け閉めボタン（開いてる時） */
+.sideMenuOpen .sideMenuInnerWrapper .menuIcon span{
+    transform: rotate(45deg);
+    margin-top: 1rem;
+    transform-origin: center center;
+    transition: all 0.5s;
+}
+.sideMenuOpen .sideMenuInnerWrapper .menuIcon span:nth-child(2){
+    transform: rotate(-45deg);
+    margin-top: -0.7rem;
+}
+
+/* ユーザーインフォ */
+.userInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem 0 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.userInfo .userName,
+.userInfo .userIcon,
+.userInfo .logoutIcon {
+    color: var(--my-color-white);
+    font-weight: bold;
+}
+.userInfo .userIcon {
+    margin-right: 1rem;
+}
+
+.open .userName,
+.open .logoutIcon {
+    display: block;
+}
+.open .userInfoInnerWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.close {
+    width: 100%;
+    text-align: center;
+    padding: 0;
+}
+.close .userName,
+.close .logoutIcon {
+    display: none;
+}
+.close .userIcon {
+    margin-right: 0;
+}
+.close .userInfoInnerWrapper {
+    width: 100%;
+}
+
+
+
+/* スマホ */
+@media screen and (max-width: 767px) {
+    
+    .sideMenu {
+        width: 100%;
+        height: 80px;
+        bottom: 0 !important;
+    }
+    .sideMenu .sideMenuInnerWrapper {
+        flex-direction: row-reverse;
+        padding: 0;
+        align-items: start;
+        width: 80%;
+        margin: auto;
+        justify-content: space-between;
+    }
+    .menuIcon {
+        display: none;
+    }
+    .navigationWrapper {
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+        height: 100%;
+    }
+
+    .close {
+        width: 100%;
+        text-align: center;
+        padding: 0;
+    }
+    .close .userName,
+    .close .logoutIcon {
+        display: none;
+    }
+    .close .userIcon {
+        margin-right: 0;
+    }
+    .close .userInfoInnerWrapper {
+        width: 100%;
+    }
+    .userInfo {
+        display: none;
+    }
+}

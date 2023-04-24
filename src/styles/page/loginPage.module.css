@@ -1,0 +1,75 @@
+
+.pageWrapper {
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: var(--my-color-lightGray);
+    margin: 0;
+    padding: 0;
+}
+
+
+.pageInner {
+    width: var(--my-size-login-inner-width);
+    height: var(--my-size-login-inner-height);
+    margin: auto;
+    margin-top: calc(((100vh - var(--my-size-login-inner-height)) / 2) - var(--my-margin-xl));
+    border-radius: var(--my-border-radius-m);
+    padding: var(--my-padding-xl) calc(var(--my-padding-xl) + var(--my-padding-m));
+    position: relative;
+    background-color: var(--my-color-white);
+    box-sizing: border-box;
+}
+
+.pageInnerL {
+    height: var(--my-size-login-inner-height-l);
+    margin-top: calc(((100vh - var(--my-size-login-inner-height-l)) / 2) - var(--my-margin-l));
+}
+
+.title {
+    font-size: var(--my-font-size-h1);
+    font-weight: bold;
+    text-align: center;
+    color: var(--my-color-navy);
+}
+
+.input {
+    padding: var(--my-padding-s);
+    width: 100%;
+    box-sizing: border-box;
+    outline: solid 1px var(--my-color-navy);
+    border-radius: var(--my-border-radius-s);
+}
+
+.label {
+    margin-bottom: var(--my-margin-xs);
+    font-size: var(--my-font-size-p);
+    color: var(--my-color-gray);
+    font-weight: bold;
+}
+
+.buttonArea {
+    position: absolute;
+    bottom: var(--my-padding-l);
+    left: calc((100% - 60%) / 2);
+    width: 60%;
+    box-sizing: border-box;
+    text-align: center;
+}
+.signUp {
+    margin-top: var(--my-margin-xs);
+    text-align: center;
+    color: var(--my-color-blue);
+    font-weight: bold;
+    display: block;
+    opacity: 1;
+    transition: all 0.5s;
+}
+.signUp:hover {
+    opacity: 0.5;
+    transition: all 0.5s;
+}

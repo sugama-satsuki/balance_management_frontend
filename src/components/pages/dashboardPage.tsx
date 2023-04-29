@@ -35,6 +35,8 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 /* import date-fns */
 import { startOfWeek, format } from 'date-fns';
 import ja from 'date-fns/locale/ja';
+import axios from 'axios';
+import { DataStateType } from '../../settingDataType';
 
 
 interface WeatherState {
@@ -44,8 +46,9 @@ interface WeatherState {
 }
 
 interface ExpensesState {
-    thisMonth: number,
-    lastMonth: number
+    selectMonth: number,
+    beginDate: Date,
+    endDate: Date
 }
 
 
@@ -63,6 +66,8 @@ export default function Dashboard(){
         {text: '日別', id: 'day'}
     ]
 
+    const today = new Date();
+
     const dayOfWeekStr:string[] = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]
 
     const [weather, setWeather] = React.useState<WeatherState>({
@@ -71,11 +76,19 @@ export default function Dashboard(){
         weeklyDates: [],
     });
 
-    const [expenses, setExpenses] = React.useState<ExpensesState>({
-        thisMonth: 0,
-        lastMonth: 0
+    const [reportDateData, setReportDateData] = React.useState<ExpensesState>({
+        selectMonth: today.getMonth(),
+        beginDate: new Date(today.getFullYear(), today.getMonth(), 1),
+        endDate: new Date(today.getFullYear(), today.getMonth() + 1, 0)
     });
 
+    const [monthlyIncome, setMonthlyIncome] = React.useState<{firstMonthTotal: number, thisMonthTotal: number}>({firstMonthTotal: 0, thisMonthTotal: 0});
+    const [monthlyExpenses, setMonthlyExpenses] = React.useState<{firstMonthTotal: number, thisMonthTotal: number}>({firstMonthTotal: 0, thisMonthTotal: 0});
+
+    const [incomeData, setIncomeData] = React.useState<DataStateType>([]);
+    const [expensesData, setExpensesData] = React.useState<DataStateType>([]);
+    
+    
     const columnData = [{
         name: '1月',
         y: 80000,
@@ -122,20 +135,43 @@ export default function Dashboard(){
             return "err:" + err;
         })
 
+        // データ取得
+        fetchData();
+
+        // TODO: 月の収入、支出の総額を画面変数に割り当てる
+        
+
+        // TODO: グラフ用月毎データにまとめる
+
+        // 
+
     }, [])
 
-    // 表示内容
-    // ・日付、天気、使いすぎ（出費アラート）、もう少し（収入応援）
-    // ・収入：月別、日別レポート
-    // ・支出：月別、日別レポート
-    // ・カレンダーでの月別、日別支出一覧
-    // ・カレンダーでの月別、日別収入一覧
+
+    // dataの取得
+    const fetchData = async () => {
+        const income = await axios.get("/data/income/642e75bea7b120ca2fa41655");
+        const expenses = await axios.get("/data/expenses/642e75bea7b120ca2fa41655");
+
+        setIncomeData(income.data);
+        setExpensesData(expenses.data);
+    }
+
+    const calcTotalData = () => {
+
+
+        // setMonthlyIncome({});
+        // setMonthlyExpenses();
+    }
+
+    // TODO：タブ押下時、月毎データ、日毎データにまとめる処理
+
 
     return(
         <BaseLayout menuNumber={1} pageTitle="ダッシュボード">
         <div className={styles.topPageWrapper}>
 
-            <Spacer size="m">
+            {/* <Spacer size="m">
                 <div className={styles.flexItemLeftWrapper}>
                     <MyCard darkMode={true} width="160px" customCss={styles.flexItem} bgCustomColor='var(--my-color-orange)'>
                         <CalendarTodayIcon className={styles.iconWithTitleIcon} />
@@ -145,20 +181,18 @@ export default function Dashboard(){
                         <Brightness7Icon className={styles.iconWithTitleIcon} />
                         <p>{weather.todayWeather}</p>
                     </MyCard>
-                    {/* <MyCard darkMode={false} width="25%" customCss={styles.flexItem}>
-                        <IconTopButton title="こんにちは" text="" url="">
-                            <AltRouteIcon />
-                        </IconTopButton>
-                    </MyCard> */}
                 </div>
-            </Spacer>
+            </Spacer> */}
 
             <Spacer size="s">
                 <MyCard darkMode={false} width="100%">
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                             <Grid xs={4} sm={3} md={4}>
-                                <ContentsTitle title="レポート" subTitle="2022/01/01~2022/01/31" />
+                                <ContentsTitle 
+                                    title="レポート" 
+                                    subTitle={format(reportDateData.beginDate, 'yyyy/MM/dd') + '〜' + format(reportDateData.endDate, 'yyyy/MM/dd')}
+                                />
                             </Grid>
                             <Grid xs={4} sm={5} md={8}>
                                 <div className={styles.tabsWrapper}>
@@ -175,33 +209,33 @@ export default function Dashboard(){
                                     <div>
                                     <div className={styles.bottomContent}>
                                         <Tag text='収入' bgColor='--my-color-pink' small/>
-                                        <p className={styles.money}>+¥500,000</p>
+                                        <p className={styles.money}>{ '￥' + incomeData }</p>
                                         <div className={styles.details}>
-                                            { expenses.thisMonth < expenses.lastMonth ? 
+                                            { monthlyIncome.firstMonthTotal > monthlyIncome.thisMonthTotal ? 
                                                 <SouthEastIcon className={`${styles.icon} ${'red'}`}/> : <NorthEastIcon className={`${styles.icon} ${'green'}`}/> 
                                             }
                                             <p className={styles.text}>前月より
-                                                { expenses.thisMonth < expenses.lastMonth ? 
-                                                    <span className='red'>¥{expenses.lastMonth - expenses.thisMonth}</span>
-                                                    : <span className='green'>¥{expenses.thisMonth - expenses.lastMonth}</span>
+                                                { monthlyIncome.firstMonthTotal > monthlyIncome.thisMonthTotal ? 
+                                                    <span className='red'>¥{monthlyIncome.firstMonthTotal - monthlyIncome.thisMonthTotal}</span>
+                                                    : <span className='green'>¥{monthlyIncome.thisMonthTotal - monthlyIncome.firstMonthTotal}</span>
                                                 }
-                                                { expenses.thisMonth < expenses.lastMonth ? '減りました。' : '増えました。'}
+                                                { monthlyIncome.firstMonthTotal > monthlyIncome.thisMonthTotal ? '減りました。' : '増えました。'}
                                             </p>
                                         </div>
                                     </div>
                                     <div className={styles.bottomContent}>
                                         <Tag text='支出' bgColor='--my-color-purple' small/>
-                                        <p className={styles.money}>-¥500,000</p>
+                                        <p className={styles.money}>{ '￥' + expensesData }</p>
                                         <div className={styles.details}>
-                                            { expenses.thisMonth < expenses.lastMonth ? 
+                                            { monthlyExpenses.firstMonthTotal > monthlyExpenses.thisMonthTotal ? 
                                                 <SouthEastIcon className={`${styles.icon} ${'green'}`}/> : <NorthEastIcon className={`${styles.icon} ${'red'}`}/> 
                                             }
                                             <p className={styles.text}>前月より
-                                                { expenses.thisMonth < expenses.lastMonth ? 
-                                                    <span className='green'>¥{expenses.lastMonth - expenses.thisMonth}</span>
-                                                    : <span className='red'>¥{expenses.thisMonth - expenses.lastMonth}</span>
+                                                { monthlyExpenses.firstMonthTotal > monthlyExpenses.thisMonthTotal ? 
+                                                    <span className='green'>¥{monthlyExpenses.firstMonthTotal - monthlyExpenses.thisMonthTotal}</span>
+                                                    : <span className='red'>¥{monthlyExpenses.thisMonthTotal - monthlyExpenses.firstMonthTotal}</span>
                                                 }
-                                                { expenses.thisMonth < expenses.lastMonth ? '減りました。' : '増えました。'}
+                                                { monthlyExpenses.thisMonthTotal < monthlyExpenses.firstMonthTotal ? '減りました。' : '増えました。'}
                                             </p>
                                         </div>
                                     </div>

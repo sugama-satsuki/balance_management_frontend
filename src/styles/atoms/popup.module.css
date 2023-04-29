@@ -15,9 +15,6 @@
     z-index: -1;
     transition: opacity 0.5s, transform 0s 0.5s;
 }
-.checkbox {
-    display: none;
-}
 
 .popupTrigger {
     position: absolute;
@@ -45,7 +42,7 @@
     cursor: pointer;
 }
 
-.checkbox:checked ~ .popupWrapper{
+.open{
     opacity: 1;
     transform: scale(1);
     transition: opacity 0.5s;

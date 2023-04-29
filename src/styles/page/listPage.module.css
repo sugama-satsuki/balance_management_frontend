@@ -19,3 +19,7 @@
 .selectWrapper {
     width: 200px;
 }
+
+.marginR_s {
+    margin-right: var(--my-margin-s);
+}

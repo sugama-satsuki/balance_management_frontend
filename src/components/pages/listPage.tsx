@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 /* import css */
 import styles from '../../styles/page/listPage.module.css';
-import btnStyles from '../../styles/atoms/button.module.css';
 
 /* import atoms */
 import Tag from '../atoms/tag';
@@ -11,6 +10,7 @@ import Spacer from '../atoms/spacer';
 
 /* import molecules */
 import MyTable from '../molecules/table';
+import MsgBanner from '../molecules/msgBanner';
 
 /* import organisms */
 import AddDataPopup from '../organisms/addDataPopup';
@@ -25,19 +25,21 @@ import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 
-import axios from 'axios';
-import MsgBanner from '../molecules/msgBanner';
+/* import axios */
+import axios, { AxiosRequestConfig } from 'axios';
+
+import { MsgType, DataStateType, itemWidth } from '../../settingDataType';
 
 
 // 型宣言
-type DataStateType = React.ReactNode[][];
 type DataType = {
     amount: string,
     category: string,
-    isTypeIncome: Boolean,
+    isTypeIncome: boolean,
     memo: string,
     title: string,
     userId: string,
+    date: Date,
     __v: string,
     _id: string
 };
@@ -51,64 +53,207 @@ type CategoryType = {
 }
 type CategoryDataType = {label: string, value: string}[];
 
-// 0:エラーなし、1:特殊文字を含む、2:入力タイプが違う、3:必須項目が空
-type ErrorType = 0 | 1 | 2 |3;
-
 
 
 export default function ListPage() {
 
-    const itemWidth:number[] = [ 4, 4, 4, 3, 5 ];
-
-    const [incomeData, setIncomeData] = useState<DataStateType>([]);
-    const [expensesData, setExpensesData] = useState<DataStateType>([]);
+    const [incomeData, setIncomeData] = useState<DataStateType[]>([]);
+    const [expensesData, setExpensesData] = useState<DataStateType[]>([]);
     const [displayDataState, setDisplayDataState] = useState<string>('income');
     const [categoryList, setCategoryList] = useState<CategoryDataType>([]);
 
+    const [openFlag, setOpenFlag] = useState<boolean>(false);
+
+    const [selectData, setSelectData] = useState<DataStateType>(['income', 0, '', 0, new Date(), '']);
+
+    const [updateFlag, setUpdateFlag] = useState<boolean>(false);
+
     // エラーメッセージの表示非表示フラグ
-    const [showMsgBnr, setShowMsgBnr] = useState<[boolean, ErrorType]>([false, 0]);
+    const [showMsgBnr, setShowMsgBnr] = useState<[boolean, MsgType]>([false, 0]);
 
     useEffect(() => {
-
-        const fetchData = async () => {
-            const income = await axios.get("/data/income/642e75bea7b120ca2fa41655");
-            const expenses = await axios.get("/data/expenses/642e75bea7b120ca2fa41655");
-            const categoryList = await axios.get('/category/allData');
-
-            // TODO:Tableコンポーネントに渡ってきたデータが0行だったら、表示するデータがありませんメッセージを表示
-            setIncomeData([
-                ['カテゴリ', '収入名', '金額', '日付', '備考'],
-                ...income.data.map((val:DataType, index:Number) => {
-                    return (
-                        [<Tag text={val.category} bgColor='--my-color-orange' small/>, val.title, '¥' + val.amount.toLocaleString(), '2023/03/20', val.memo]
-                    )
-                })
-            ]);
-            setExpensesData([
-                ['カテゴリ', '支出名', '金額', '日付', '備考'],
-                ...expenses.data.map((val:DataType, index:Number) => {
-                    return (
-                        [<Tag text={val.category} bgColor='--my-color-orange' small/>, val.title, '¥' + val.amount.toLocaleString(), '2023/03/20', val.memo]
-                    )
-                })
-            ]);
-
-            setCategoryList([
-                { label: '-- カテゴリを選択 --', value: '' },
-                ...categoryList.data.map((val: CategoryType, index: number) => {
-                    return (
-                        {label: val.label, value: val.category_key}
-                    )
-                })
-            ]);
-        }
-
         fetchData();
     }, []);
 
 
+    // データ取得
+    const fetchData = async () => {
+        const income = await axios.get("/data/income/642e75bea7b120ca2fa41655");
+        const expenses = await axios.get("/data/expenses/642e75bea7b120ca2fa41655");
+        const categoryList = await axios.get('/category/allData');
+
+
+        setIncomeData([
+            [0, false, 'カテゴリ', '収入名', '金額', '日付', 'メモ'],
+            // { id: 0, checkFlag: false, category: 'カテゴリ', title: '収入名', amount: '金額', date: '日付', memo: 'メモ' },
+            ...income.data.map((val:DataType, index:number) => {
+                return (
+                    [
+                        val._id, 
+                        false, 
+                        <Tag text={val.category} bgColor='--my-color-orange' small/>, 
+                        val.title, 
+                        '¥' + val.amount.toLocaleString(), 
+                        val.date, 
+                        val.memo
+                    ]
+                )
+            })
+        ]);
+
+        setExpensesData([
+            [0, false, 'カテゴリ', '支出名', '金額', '日付', 'メモ'],
+            // { id: 0, checkFlag: false, category: 'カテゴリ', title: '支出名', amount: '金額', date: '日付', memo: 'メモ' },
+            ...expenses.data.map((val:DataType, index:number) => {
+                return (
+                    [
+                        val._id, 
+                        false, 
+                        <Tag text={val.category} bgColor='--my-color-orange' small/>, 
+                        val.title, 
+                        '¥' + val.amount.toLocaleString(), 
+                        val.date, 
+                        val.memo
+                    ]
+                )
+            })
+        ]);
+
+        // 新規登録ポップアップに渡す カテゴリ一覧のセット
+        setCategoryList([
+            { label: '-- カテゴリを選択 --', value: '' },
+            ...categoryList.data.map((val: CategoryType, index: number) => {
+                return (
+                    {label: val.label, value: val.category_key}
+                )
+            })
+        ]);
+
+        setUpdateFlag(false);
+    }
+
+
+
+
+    
+
+    // データ削除
     const onClickDeleteData = () => {
-        console.log('onClick new data');
+
+        let deleteItemIdArr:{id: string}[] = [];
+        let count:number = 0;
+
+        // チェックのついている項目を確認
+        if(displayDataState === 'income'){
+            incomeData.forEach((val:DataStateType) => {
+                if(count > 0 && val[1]) {
+                    deleteItemIdArr.push({id: val[0]});
+                }
+                count ++;
+            }) 
+        }else{
+            expensesData.forEach((val:DataStateType) => {
+                if(count > 0 && val[1]) {
+                    deleteItemIdArr.push({id: val[0]});
+                }
+                count ++;
+            })
+        }
+
+        if(deleteItemIdArr.length === 0) {
+            // warningを出す
+            setShowMsgBnr([true, 9])
+        }else{
+            // 削除
+            deleteData(deleteItemIdArr);
+        }
+
+    }
+
+
+
+    const setData = (data: DataStateType) => {
+        
+        setSelectData([displayDataState, data[2].props.text, data[3], data[4], new Date(data[5]), data[6]]);
+        console.log('data: ', data, displayDataState)
+    }
+
+    // セル押下時処理
+    const onClickTableRow = (data: DataStateType) => {
+        setUpdateFlag(true);
+        setData(data);
+        setOpenFlag(true);
+    }
+
+
+
+    // データの削除
+    const deleteData = async (delDataIdArr:{id: string}[]) => {
+        const idArr: AxiosRequestConfig = {
+            data: [
+                ...delDataIdArr
+            ]
+        }
+        await axios.delete('/data/delete', idArr);
+    }
+
+
+    // テーブルのチェックボックスに全チェック入れる関数
+    const TableAllCheck = (chkFlag: boolean):void => {
+
+        if(displayDataState === 'income'){
+
+            setIncomeData([
+                ...incomeData.map((val:DataStateType) => {
+                    return [
+                        val[0], 
+                        !chkFlag, 
+                        val[2], 
+                        val[3], 
+                        val[4], 
+                        val[5], 
+                        val[6]
+                    ]
+                })
+            ]);
+
+        }else{
+
+            setExpensesData([
+                ...expensesData.map((val:DataStateType) => {
+                    return [
+                        val[0], 
+                        !chkFlag, 
+                        val[2], 
+                        val[3], 
+                        val[4], 
+                        val[5], 
+                        val[6]
+                    ]
+                })
+            ]);
+
+        }
+    }
+
+    // テーブルのチェックを保持する関数
+    const TableCheck = (num: number, chkFlag: boolean):void => {
+
+        if(displayDataState === 'income'){
+            setIncomeData([
+                ...incomeData.map((val:DataStateType) => {
+                    if(val[0] === num) val[1] = !chkFlag;
+                    return val;
+                })
+            ])
+        }else{
+            setExpensesData([
+                ...expensesData.map((val:DataStateType) => {
+                    if(val[0] === num) val[1] = !chkFlag;
+                    return val;
+                })
+            ])
+        }
     }
 
 
@@ -118,8 +263,13 @@ export default function ListPage() {
     }
 
     // 登録ポップアップに渡す関数
-    const changeBnrDisplay = (flag: boolean, num: ErrorType) => {
-        setShowMsgBnr([flag, num]);
+    const changeBnrDisplay = (msgBnrVal:[boolean, MsgType]) => {
+        setShowMsgBnr(msgBnrVal);
+    }
+
+    // ポップアップ表示/非表示
+    const changePopup = () => {
+        setOpenFlag(!openFlag);
     }
 
 
@@ -149,14 +299,25 @@ export default function ListPage() {
                         </FormControl>
                     </Box>
                     <div className={styles.btnWrapper}>
-                        <label htmlFor="trigger" className={`${btnStyles.squareButton} ${btnStyles.primary}`}>新規追加</label>
+                        <div className={styles.marginR_s}><SquareButton text='新規追加' secondary onClick={changePopup}/></div>
                         <SquareButton text='削除' onClick={onClickDeleteData}/>
                     </div>
                 </div>
-                <AddDataPopup categoryList={categoryList} showMsgFlag={showMsgBnr} setMsgFlag={setShowMsgBnr} />
+
+                <AddDataPopup 
+                    categoryList={categoryList} 
+                    showMsgFlag={showMsgBnr} 
+                    setMsgFlag={changeBnrDisplay} 
+                    openFlag={openFlag} 
+                    onClickCloseBtn={changePopup} 
+                    reloadData={fetchData} 
+                    data={selectData} 
+                    isUpdate={updateFlag} 
+                />
+                
                 <Spacer size='s'>
                     <div className={styles.listWrapper}>
-                        <MyTable items={displayDataState === 'income'? incomeData:expensesData} showCheckBox itemWidth={itemWidth} />
+                        <MyTable items={displayDataState === 'income'? incomeData:expensesData} showCheckBox itemWidth={itemWidth} name='itemList' allCheckFunc={TableAllCheck} cellCheckFunc={TableCheck} onClickTableRow={onClickTableRow} />
                     </div>
                 </Spacer>
             </div>

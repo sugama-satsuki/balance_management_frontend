@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // import css
 import styles from '../../styles/molecules/table.module.css'
+import { DataStateType } from '../../settingDataType';
 
 
 type Props = {
-    items: React.ReactNode[][],
+    items: DataStateType[],
     itemWidth: number[],
-    showCheckBox?: boolean
+    showCheckBox?: boolean,
+    name: string,
+    allCheckFunc: (checkFlag: boolean) => void,
+    cellCheckFunc: (num: number, checkFlag: boolean) => void,
+    onClickTableRow: (data: DataStateType) => void
 }
 
 export default function MyTable(props: Props) {
 
-    const { items, itemWidth, showCheckBox } = props;
+    const { items, itemWidth, name, allCheckFunc, cellCheckFunc, onClickTableRow } = props;
+
 
     const cellSize:string[] = [
         styles.cellS,
@@ -23,28 +29,51 @@ export default function MyTable(props: Props) {
         styles.cellFill
     ]
 
+    const onClickRow = (i: number, data: DataStateType) => {
+        // headerじゃなかったら、動作する
+        if(i > 0){
+            onClickTableRow(data);
+        }
+    }
+
+
     return(
         <div className={styles.myTable}>
-            { items.map((row, i) => {
-                return <div className={styles.row} key={i}>
-                            {
-                            // チェックボックスを表示する？ 1行目だったらHeader
-                            showCheckBox && i === 0 ? 
-                            <div className={`${styles.tableHeader} ${styles.cellS} ${styles.headCheckboxCell}`} key={i}><input type='checkbox'/></div> 
-                            :<div className={`${styles.cell} ${styles.cellS}`} key={i}><input type='checkbox'/></div> 
-                            }
-
-                            { row.map((cell, j) => {
-                                  return( 
-                                    // 1行目だったらHeader
-                                    i === 0 ? 
-                                        <div className={`${styles.tableHeader} ${cellSize[itemWidth[j]]}`} key={j}>{cell}</div>
-                                        :<div className={`${styles.cell} ${cellSize[itemWidth[j]]}`} key={j}>{cell}</div> 
-                                  );
-                              }) 
-                            }
-                       </div>
-            }) }
+            {
+              items.map((row:DataStateType, i:number) => {
+                return(
+                    <div className={styles.row} key={i} onClick={() => onClickRow(i, row)}>
+                        { row.map((cell, j) => {
+                            return(
+                                // 1行目だったらHeader
+                                j > 0 &&
+                                    <div 
+                                        className={`
+                                            ${ i === 0 ? styles.tableHeader : styles.cell } 
+                                            ${cellSize[itemWidth[j]]} 
+                                            ${ j === 1 && styles.headCheckboxCell}
+                                         `} 
+                                        key={j}
+                                    >
+                                        {  j === 1 ?
+                                            <input 
+                                                type='checkbox' 
+                                                id={ i === 0 ? name +'headerCheckBox' : name + 'CheckBox' + i} 
+                                                onChange={() => i === 0 ? allCheckFunc(cell) : cellCheckFunc(row[0], cell)} 
+                                                checked={cell}
+                                            />
+                                            : cell
+                                        }
+                                    </div>
+                                // :<></>
+                            );
+                            })
+                        }
+                    </div>
+                )
+              })
+            }
+            { items.length === 1 && <div>表示するデータがありません。</div> }
         </div>
     )
 }

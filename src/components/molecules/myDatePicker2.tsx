@@ -6,7 +6,6 @@ import { PickerSelectionState } from "@mui/x-date-pickers/internals";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 import ja from 'date-fns/locale/ja';
 
@@ -29,20 +28,19 @@ export default function MyDatePicker(props: Props) {
 
     // calenderのonChange関数
     const onChangeCalender = (value: Date | null, selectionState?: PickerSelectionState | undefined) => {
-        let newDate:Date = value == null ? selectValue : value;
+        let newDate:Date = value == null ? new Date() : value;
         setSelectDate(newDate);
-        console.log(selectDate)
         setShowCalender(!showCalender);
         changeFunc(newDate);
-        console.log(newDate == null, selectDate, newDate, value)
     }
     
     return(
         <div className={styles.my_calender}>
             <div className={styles.inputArea_wrapper}>
                 <input type='text' 
-                    defaultValue={`${selectDate.getFullYear()}年${selectDate.getMonth() + 1}月${selectDate.getDate()}日` } 
+                    value={`${selectDate.getFullYear()}年${selectDate.getMonth() + 1}月${selectDate.getDate()}日` } 
                     onClick={() => {setShowCalender(!showCalender)}}
+                    onChange={() => {}}
                     className={styles.input}
                 />
             </div>

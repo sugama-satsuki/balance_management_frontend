@@ -1,17 +1,13 @@
 import React, {ReactNode} from "react";
-import { useTheme, makeStyles, Theme } from "@material-ui/core/styles";
-import { useState, useEffect } from "react";
 
 /* import css */ 
-import '../../styles/sideMenu.css';
-import styles from '../../styles/sideMenuButton.module.css';
+import styles from '../../styles/sideMenu.module.css';
 
 /* import atoms */ 
 import SideMenuButton from "../atoms/sideMenuButton";
 
 /* import mui icons */ 
 import HomeIcon from '@mui/icons-material/Home';
-import BiotechIcon from '@mui/icons-material/Biotech';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -49,26 +45,26 @@ export default function MySideMenu(props: Props) {
 
 
     return(
-        <div className={`${'sideMenu'} ${isOpen ? 'sideMenuOpen' : 'sideMenuClose'}`}>
-            <div className='sideMenuInnerWrapper'>
+        <div className={`${styles.sideMenu} ${isOpen ? styles.sideMenuOpen : styles.sideMenuClose}`}>
+            <div className={styles.sideMenuInnerWrapper}>
                 {/* メニュー開け閉めボタン */}
-                <div className='menuIcon' onClick={() => {onClickMenuIcon()}}>
+                <div className={styles.menuIcon} onClick={() => {onClickMenuIcon()}}>
                     <span></span><span></span>
                 </div>
 
                 {/* ユーザーインフォ */}
-                <div className={`${'userInfo'} ${isOpen ? 'open' : 'close'}`}>
-                    <div className='userInfoInnerWrapper'>
-                        <span className='userIcon'>
+                <div className={`${styles.userInfo} ${isOpen ? styles.open : styles.close}`}>
+                    <div className={styles.userInfoInnerWrapper}>
+                        <span className={styles.userIcon}>
                             {userIcon === '' ? <AccountCircleIcon style={{fontSize:'2.5rem'}} /> : <img src={userIcon} alt=''/> }
                         </span>
-                        <span className='userName'>{userName}</span>
+                        <span className={styles.userName}>{userName}</span>
                     </div>
-                    <span className='logoutIcon'><LogoutIcon /></span>
+                    <span className={styles.logoutIcon}><LogoutIcon /></span>
                 </div>
 
                 {/* ナビゲーションメニュー */}
-                <div className='navigationWrapper'>
+                <div className={styles.navigationWrapper}>
                     <SideMenuButton text="ダッシュボード" url="/" isSelect={menuState === 1} onClick={onClickMenuButton} isMenuOpen={isOpen} num={1} key={1}>
                         <HomeIcon />
                     </SideMenuButton>
@@ -77,7 +73,7 @@ export default function MySideMenu(props: Props) {
                     </SideMenuButton>
                 </div>
                 {/* メニューフッターロゴ */}
-                <div className='logoWrapper'>
+                <div className={styles.logoWrapper}>
                     {logo}
                 </div>
             </div>

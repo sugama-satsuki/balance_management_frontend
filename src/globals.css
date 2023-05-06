@@ -14,10 +14,10 @@
   --my-color-bgBlur: rgba(0, 0, 0, 0.3);
 
   /* size */
-  --my-size-sideMenuCloseW: 3.5rem;
-  --my-size-sideMenuOpenW: 16rem;
-  --my-size-headerH: 4rem;
-  --my-size-fromWidget: 2.5rem;
+  --my-size-sideMenuCloseW: 50px;
+  --my-size-sideMenuOpenW: 256px;
+  --my-size-headerH: 56px;
+  --my-size-fromWidget: 40px;
   --my-size-icon: 24px;
   --my-size-popup-width-s: 200px;
   --my-size-popup-height-s: 300px;
@@ -34,6 +34,7 @@
   --my-size-login-inner-width: 460px;
   --my-size-login-inner-height-l: 560px;
   --my-size-msgBnr-width: 420px;
+  --my-size-header-logo: calc(14px + (8*2));
 
 
   /* space: margin */

@@ -1,3 +1,4 @@
+import { SeriesOptionsType } from "highcharts";
 
 /*
  * 0 : エラーなし
@@ -56,4 +57,9 @@ export const itemWidth:number[] = [ 0, 0, 4, 4, 4, 3, 5 ];
 enum DateFormat {
     YY_MM_DD_dd = 'YYYY/MM/DD(dd)',
     MM_DD_dd = 'MM/DD(dd)',
+}
+
+export type DataSeriesType = {
+    income: SeriesOptionsType,
+    expenses: SeriesOptionsType
 }

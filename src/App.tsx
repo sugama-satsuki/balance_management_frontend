@@ -1,17 +1,16 @@
-import React,{ useReducer } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
 
 /* import css */
 import './App.css';
 import './globals.css';
 
 /* import page */ 
-import Dashboard from './components/pages/dashboardPage';
-import ListPage from './components/pages/listPage';
-import SettingPage from './components/pages/settingPage';
-import LoginPage from './components/pages/loginPage';
-import UserRegisterPage from './components/pages/userRegisterPage';
+import Dashboard from './components/pages/dashboard/dashboardPage';
+import ListPage from './components/pages/list/listPage';
+import SettingPage from './components/pages/setting/settingPage';
+import LoginPage from './components/pages/login/loginPage';
+import UserRegisterPage from './components/pages/login/userRegisterPage';
 
 
 function App() {

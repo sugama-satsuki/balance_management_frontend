@@ -1,0 +1,17 @@
+.mainContentsWrapper {
+    position: absolute;
+    top: var(--my-size-headerH);
+    right: 0;
+    width: 100%;
+    height: calc(100% - var(--my-size-headerH));
+    overflow: scroll;
+    padding: var(--my-margin-m) 0;
+    box-sizing: border-box;
+}
+.mainContentInner {
+    width: 90%;
+    margin: auto;
+}
+.mainContentInner::-webkit-scrollbar{
+    display:none;
+}

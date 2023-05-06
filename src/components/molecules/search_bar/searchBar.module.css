@@ -1,0 +1,28 @@
+.searchBar {
+    border-radius: 3rem;
+    background-color: var(--my-color-bgColor);
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 40%;
+}
+.searchBar input {
+    font-size: 0.8rem;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    display: block;
+    height: 1.5rem;
+    box-sizing: border-box;
+    margin-left: 0.5rem;
+    width: 100%;
+    color: var(--my-color-gray);
+}
+.searchBar input:focus {
+    outline: none;
+}
+
+.searchBar svg {
+    font-size: 1.5rem;
+    color: var(--my-color-gray);
+}

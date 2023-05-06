@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef }  from "react";
-import Highcharts from 'highcharts';
+import Highcharts, { SeriesOptionsType } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsExporting from 'highcharts/modules/exporting';
@@ -8,12 +8,17 @@ import styled from "@emotion/styled";
 
 
 type Props = {
-    height?: string
+    height?: string,
+    series: SeriesOptionsType[],
+    title?: string,
+    subTitle?: string,
+    yAxisTitle?: string,
+    xAxisTitle?: string
 }
 
 export default function BaseLineCharts(props:Props) {
 
-    const {height} = props;
+    const {height, series, title, subTitle, xAxisTitle, yAxisTitle} = props;
 
     // Highcahrtsの設定
     const [chartOptions, setChartOption] = useState<Highcharts.Options>({
@@ -22,21 +27,21 @@ export default function BaseLineCharts(props:Props) {
             height: height
         },
         title: {
-            text: ''
+            text: title
         },
         subtitle: {
-            text: ''
+            text: subTitle
         },
     
         yAxis: {
             title: {
-                text: ''
+                text: yAxisTitle
             }
         },
     
         xAxis: {
-            accessibility: {
-                rangeDescription: 'Range: 2010 to 2020'
+            title: {
+                text: xAxisTitle
             }
         },
     
@@ -55,44 +60,7 @@ export default function BaseLineCharts(props:Props) {
         },
     
         series: [
-            {
-                name: 'Installation & Developers',
-                data: [43934, 48656, 65165, 81827, 112143, 142383,
-                    171533, 165174, 155157, 161454, 154610],
-                type: 'area',
-                color: 'var(--my-color-pink)',
-                fillColor: {
-                    linearGradient: {
-                        x1: 1,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1,
-                    },
-                    stops: [
-                        [0, 'var(--my-color-pink)'],
-                        [1, 'var(--my-color-white)']
-                    ]
-                }
-            }, 
-            {
-                name: 'Manufacturing',
-                data: [24916, 37941, 29742, 29851, 32490, 30282,
-                    38121, 36885, 33726, 34243, 31050],
-                type: 'area',
-                color: 'var(--my-color-purple)',
-                fillColor: {
-                    linearGradient: {
-                        x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1,
-                    },
-                    stops: [
-                        [0, 'var(--my-color-purple)'],
-                        [1, 'var(--my-color-white)']
-                    ]
-                }
-            }
+            ...series
         ],
     
         responsive: {

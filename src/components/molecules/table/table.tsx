@@ -5,6 +5,8 @@ import styles from './table.module.css'
 
 import { DataStateType } from '../../../settingDataType';
 
+import { format } from 'date-fns';
+
 
 type Props = {
     items: DataStateType[],
@@ -43,7 +45,7 @@ export default function MyTable(props: Props) {
             {
               items.map((row:DataStateType, i:number) => {
                 return(
-                    <div className={styles.row} key={i} onClick={() => onClickRow(i, row)}>
+                    <div className={styles.row} key={i} >
                         { row.map((cell, j) => {
                             return(
                                 // 1行目だったらHeader
@@ -55,6 +57,7 @@ export default function MyTable(props: Props) {
                                             ${ j === 1 && styles.headCheckboxCell}
                                          `} 
                                         key={j}
+                                        onClick={() => j > 1 && onClickRow(i, row)}
                                     >
                                         {  j === 1 ?
                                             <input 
@@ -63,10 +66,9 @@ export default function MyTable(props: Props) {
                                                 onChange={() => i === 0 ? allCheckFunc(cell) : cellCheckFunc(row[0], cell)} 
                                                 checked={cell}
                                             />
-                                            : cell
+                                            : isNaN(new Date(cell).getDate()) ? cell : format(new Date(cell), 'yyyy/MM/dd')
                                         }
                                     </div>
-                                // :<></>
                             );
                             })
                         }

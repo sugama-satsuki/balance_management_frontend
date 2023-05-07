@@ -13,6 +13,7 @@ import SouthEastIcon from '@mui/icons-material/SouthEast';
 import NorthEastIcon from '@mui/icons-material/NorthEast';
 import TodayIcon from '@mui/icons-material/Today';
 import CategoryIcon from '@mui/icons-material/Category';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 /* import date-fns */
 import { format, startOfWeek } from 'date-fns';
@@ -51,10 +52,10 @@ interface ExpensesState {
 export default function Dashboard(){
 
     // 表示データ
-    const listItems:{title: string, description?: string, img: string}[] = [
-        {title: "タスク1", description: "タスク1の説明です。〇〇をします。", img: ""},
-        {title: "タスク2", description: "タスク2の説明です。〇〇をします。", img: ""},
-        {title: "タスク3", description: "タスク3の説明です。〇〇をします。", img: ""}
+    const listItems:{title: string, description?: string, img: React.ReactNode}[] = [
+        {title: "本買った", description: "¥5,000", img: <MenuBookIcon/>},
+        {title: "給料", description: "¥400,000", img: ""},
+        {title: "だんご食べた", description: "¥2,500", img: ""}
     ];
 
     const tabItems:{text: string, id: string}[] = [
@@ -83,7 +84,7 @@ export default function Dashboard(){
     const [seriesData, setSeriesData] = React.useState<DataSeriesType>({
         income: {
             name: 'Income',
-            data: [],
+            data: [43934, 48656, 65165, 81827, 112143, 142383, 171533],
             type: 'area',
             color: 'var(--my-color-pink)',
             fillColor: {
@@ -101,9 +102,9 @@ export default function Dashboard(){
         }, 
         expenses: {
             name: 'Expenses',
-            data: [],
+            data: [24916, 37941, 29742, 29851, 32490, 30282, 38121],
             type: 'area',
-            color: 'var(--my-color-pink)',
+            color: 'var(--my-color-purple)',
             fillColor: {
                 linearGradient: {
                     x1: 1,
@@ -112,7 +113,7 @@ export default function Dashboard(){
                     y2: 1,
                 },
                 stops: [
-                    [0, 'var(--my-color-pink)'],
+                    [0, 'var(--my-color-purple)'],
                     [1, 'var(--my-color-white)']
                 ]
             }
@@ -183,8 +184,6 @@ export default function Dashboard(){
         // 支出の計算
         expenses.forEach((val, i) => {
             let valDate  = new Date(val.date);
-            console.log(valDate, val.amount, valDate.getFullYear === today.getFullYear && valDate.getMonth === today.getMonth);
-            console.log('val year:',valDate.getFullYear(), today.getFullYear(), '　val month:',valDate.getMonth(), today.getMonth());
 
             // 同じ月だったら
             if(valDate.getFullYear() === today.getFullYear() && valDate.getMonth() === today.getMonth()) {
@@ -352,14 +351,14 @@ export default function Dashboard(){
                 <div className={styles.flexItemWrapper}>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            <Grid xs={4} sm={4} md={6}>
+                            <Grid xs={4} sm={4} md={4}>
                                 <MyCard darkMode={false} width="100%">
                                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ja}>
                                         <DateCalendar displayWeekNumber />
                                     </LocalizationProvider>      
                                 </MyCard>                      
                             </Grid>
-                            <Grid xs={4} sm={4} md={6}>
+                            <Grid xs={4} sm={4} md={8}>
                                 <MyCard darkMode={false} width="100%">
                                     <ListWithIcon items={listItems}/>
                                 </MyCard>

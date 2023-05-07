@@ -4,7 +4,7 @@ import React from "react";
 import styles from './list.module.css';
 
 type Props = {
-    items: {title: string, description?: string, img: string}[]
+    items: {title: string, description?: string, img?: React.ReactNode}[],
 }
 
 export default function ListWithIcon(props: Props){
@@ -16,12 +16,12 @@ export default function ListWithIcon(props: Props){
             {items.map((item, index) => {
                 return(
                     <li key={index}>
-                        {item.img === '' && 
+                        {item.img && 
                             <span className={styles.img}>
-                                <img src={item.img} alt={item.img} />
+                                { item.img }
                             </span>
                         }
-                        <span>{item.title}</span>
+                        <span className={styles.title}>{item.title}</span>
                         <span>{item.description}</span>
                     </li>
                 )

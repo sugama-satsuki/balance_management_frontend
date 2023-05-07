@@ -18,3 +18,8 @@
     color: var(--my-color-white);
     transition: all 0.5s;
 }
+
+.title {
+    font-weight: bold;
+    margin: auto var(--my-margin-s);
+}

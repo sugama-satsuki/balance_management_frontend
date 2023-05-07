@@ -11,7 +11,7 @@ import styles from './loginPage.module.css';
 import { jaJP } from '@mui/x-data-grid';
 
 /* import material-ui */ 
-import { createTheme } from '@material-ui/core';
+import { createTheme } from '@mui/material';
 
 /* import atoms */ 
 import { SquareButton } from '../../atoms/button/button';

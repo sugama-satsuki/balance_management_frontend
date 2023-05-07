@@ -14,6 +14,8 @@ import NorthEastIcon from '@mui/icons-material/NorthEast';
 import TodayIcon from '@mui/icons-material/Today';
 import CategoryIcon from '@mui/icons-material/Category';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import KebabDiningIcon from '@mui/icons-material/KebabDining';
 
 /* import date-fns */
 import { format, startOfWeek } from 'date-fns';
@@ -52,10 +54,10 @@ interface ExpensesState {
 export default function Dashboard(){
 
     // 表示データ
-    const listItems:{title: string, description?: string, img: React.ReactNode}[] = [
-        {title: "本買った", description: "¥5,000", img: <MenuBookIcon/>},
-        {title: "給料", description: "¥400,000", img: ""},
-        {title: "だんご食べた", description: "¥2,500", img: ""}
+    const listItems:{title: string, description?: string, icon: React.ReactNode}[] = [
+        {title: "本買った", description: "¥5,000", icon: <MenuBookIcon fontSize="small"/>},
+        {title: "給料", description: "¥400,000", icon: <CreditCardIcon fontSize="small"/>},
+        {title: "だんご食べた", description: "¥2,500", icon: <KebabDiningIcon fontSize="small"/>}
     ];
 
     const tabItems:{text: string, id: string}[] = [
@@ -360,7 +362,7 @@ export default function Dashboard(){
                             </Grid>
                             <Grid xs={4} sm={4} md={8}>
                                 <MyCard darkMode={false} width="100%">
-                                    <ListWithIcon items={listItems}/>
+                                    <ListWithIcon items={listItems} showHeader={true} headerData={format(new Date(), 'yyyy/MM/dd') + 'の収支一覧'}/>
                                 </MyCard>
                             </Grid>
                         </Grid>

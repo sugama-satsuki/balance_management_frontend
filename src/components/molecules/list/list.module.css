@@ -5,21 +5,47 @@
 
 .listWrapper li {
     padding: 0.5rem 1rem;
-    border-radius: 0.2rem;
+    border-radius: var(--my-border-radius-s);
     background-color: var(--my-color-bgColor);
     list-style: none;
     margin-bottom: 0.5rem;
     color: var(--my-color-navy);
     transition: all 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.listWrapper li:hover {
-    background-color: var(--my-color-primary);
-    color: var(--my-color-white);
+.listWrapper li:not(.header):hover {
+    opacity: 0.5;
     transition: all 0.5s;
+}
+
+.listWrapper .header {
+    background-color: var(--my-color-navy);
+    color: var(--my-color-white);
+    border-radius: var(--my-border-radius-s) var(--my-border-radius-s) 0 0;
+}
+
+.leftContent {
+    display: flex;
+    align-items: center;
+    justify-content: left;
 }
 
 .title {
     font-weight: bold;
     margin: auto var(--my-margin-s);
+}
+.iconWrapper {
+    background-color: var(--my-color-green);
+    border-radius: var(--my-border-radius-circle);
+    color: var(--my-color-white);
+    min-width: var(--my-font-size-h1);
+    min-height: var(--my-font-size-h1);
+    padding: var(--my-padding-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--my-font-size-p);
 }

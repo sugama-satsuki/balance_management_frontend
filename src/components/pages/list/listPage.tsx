@@ -28,7 +28,9 @@ import FormControl from '@mui/material/FormControl';
 /* import axios */
 import axios, { AxiosRequestConfig } from 'axios';
 
-import { MsgType, DataStateType, itemWidth } from '../../../settingDataType';
+import { MsgType, DataStateType } from '../../../types/global';
+
+import { fields } from '../../../consts/fields';
 
 
 // 型宣言
@@ -317,7 +319,7 @@ export default function ListPage() {
                 
                 <Spacer size='s'>
                     <div className={styles.listWrapper}>
-                        <MyTable items={displayDataState === 'income'? incomeData:expensesData} showCheckBox itemWidth={itemWidth} name='itemList' allCheckFunc={TableAllCheck} cellCheckFunc={TableCheck} onClickTableRow={onClickTableRow} />
+                        <MyTable items={displayDataState === 'income'? incomeData:expensesData} showCheckBox itemWidth={fields.tableCellWidth} name='itemList' allCheckFunc={TableAllCheck} cellCheckFunc={TableCheck} onClickTableRow={onClickTableRow} />
                     </div>
                 </Spacer>
             </div>

@@ -3,7 +3,7 @@ import React from 'react';
 /* import css */
 import styles from './table.module.css'
 
-import { DataStateType } from '../../../settingDataType';
+import { DataStateType } from '../../../types/global';
 
 import { format } from 'date-fns';
 

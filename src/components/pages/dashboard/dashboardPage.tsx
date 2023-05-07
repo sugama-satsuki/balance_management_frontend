@@ -21,7 +21,7 @@ import KebabDiningIcon from '@mui/icons-material/KebabDining';
 import { format, startOfWeek } from 'date-fns';
 import ja from 'date-fns/locale/ja';
 import axios from 'axios';
-import { DataSeriesType, DataStateType } from '../../../settingDataType';
+import { DataSeriesType, DataStateType } from '../../../types/global';
 
 /* import template */
 import BaseLayout from '../../template/base_layout/baseLayout';

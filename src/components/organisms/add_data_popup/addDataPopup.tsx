@@ -18,7 +18,7 @@ import MyRadioGroup from '../../molecules/radio_group/myRadioGroup';
 import MyDatePicker from '../../molecules/date_piker/myDatePicker2';
 import MyDropDown from '../../molecules/dropdown/myDropDown';
 
-import { DataStateType, MsgType } from '../../../settingDataType';
+import { DataStateType, MsgType } from '../../../types/global';
 
 
 /* type宣言 */ 

@@ -8,7 +8,8 @@ import styles from './msgBanner.module.css';
 import WarningIcon from '@mui/icons-material/Warning';
 import InfoIcon from '@mui/icons-material/Info';
 
-import { MsgType, messageList } from '../../../settingDataType';
+import { fields } from '../../../consts/fields';
+import { MsgType } from '../../../types/global';
 
 
 type PropsType = {
@@ -27,7 +28,7 @@ export default function MsgBanner(props: PropsType) {
         <div className={`${styles.msgBnr} ${show? styles.show : styles.hide} ${msgType === 'e' ? styles.errorColor : styles.successColor }`}
             onClick={onClickFunc}>
             { msgType === 'e' ? <WarningIcon className={styles.icon}/> : <InfoIcon className={styles.icon}/>}
-            { messageList[msgNum].msg }
+            { fields.messageList[msgNum].msg }
         </div>
     )
 }

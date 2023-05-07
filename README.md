@@ -1,6 +1,10 @@
 # 収支管理アプリ（フロントエンド）
 BalanceManagement（frontend）は、未完成です。
 
+## 使用技術
+- React
+- TypeScript
+
 ## ◆　見た目
 #### ダッシュボード画面
 <img width="450" alt="スクリーンショット 2023-05-07 21 33 18" src="https://user-images.githubusercontent.com/46039732/236677891-04ee8375-8861-4864-8ebf-788c21d266ce.png">

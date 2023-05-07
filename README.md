@@ -1,5 +1,6 @@
 # 収支管理アプリ（フロントエンド）
 BalanceManagement（frontend）は、未完成です。
+[収支管理アプリ（バックエンド）](https://github.com/sugama-satsuki/balance_management_backend)のAPIを使用します。
 
 ## ◆ 使用技術
 - React

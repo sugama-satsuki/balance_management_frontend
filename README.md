@@ -1,7 +1,7 @@
 # 収支管理アプリ（フロントエンド）
 BalanceManagement（frontend）は、未完成です。
 
-## 使用技術
+## ◆ 使用技術
 - React
 - TypeScript
 

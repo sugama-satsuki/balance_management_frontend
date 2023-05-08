@@ -18,10 +18,11 @@ type Props = {
 
 export default function BaseLineCharts(props:Props) {
 
-    const {height, series, title, subTitle, xAxisTitle, yAxisTitle} = props;
+    const {height, series, title, subTitle, yAxisTitle} = props;
 
     // Highcahrtsの設定
-    const [chartOptions, setChartOption] = useState<Highcharts.Options>({
+    // const [chartOptions, setChartOption] = useState<Highcharts.Options>({
+    const chartOptions:Highcharts.Options = {
         chart: {
             type: 'area',
             height: height
@@ -40,9 +41,7 @@ export default function BaseLineCharts(props:Props) {
         },
     
         xAxis: {
-            title: {
-                text: xAxisTitle
-            }
+            visible: false
         },
     
         legend: {
@@ -55,7 +54,6 @@ export default function BaseLineCharts(props:Props) {
                 label: {
                     connectorAllowed: false
                 },
-                pointStart: 2010
             },
         },
     
@@ -66,7 +64,7 @@ export default function BaseLineCharts(props:Props) {
         responsive: {
             rules: [{
                 condition: {
-                    maxWidth: 500
+                    maxWidth: 550
                 },
                 chartOptions: {
                     legend: {
@@ -77,7 +75,8 @@ export default function BaseLineCharts(props:Props) {
                 }
             }]
         }
-    })
+    };
+    // })
 
     // 初回のみ実行
     useEffect(() => {

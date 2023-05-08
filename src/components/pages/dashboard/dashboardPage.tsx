@@ -9,16 +9,12 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { Box } from '@mui/system';
 import Grid from '@mui/material/Unstable_Grid2';
-import SouthEastIcon from '@mui/icons-material/SouthEast';
-import NorthEastIcon from '@mui/icons-material/NorthEast';
-import TodayIcon from '@mui/icons-material/Today';
-import CategoryIcon from '@mui/icons-material/Category';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import KebabDiningIcon from '@mui/icons-material/KebabDining';
 
 /* import date-fns */
-import { format, startOfWeek } from 'date-fns';
+import { format } from 'date-fns';
 import ja from 'date-fns/locale/ja';
 import axios from 'axios';
 import { DataSeriesType, DataStateType, IdWithTextType, MonthlyDataType } from '../../../types/global';
@@ -29,18 +25,11 @@ import BaseLayout from '../../template/base_layout/baseLayout';
 /* import atoms */ 
 import MyCard from '../../atoms/card/card';
 import Spacer from '../../atoms/spacer/spacer';
-import Tag from '../../atoms/tag,/tag';
-import Line from '../../atoms/line/Line';
-import { ContentsTitle } from '../../atoms/title/title';
 
 /* import molecules */ 
 import ListWithIcon from '../../molecules/list/list';
-import BaseLineCharts from '../../molecules/charts/baseLine';
-import { HorizontalTabs } from '../../molecules/tab_content/tabContent';
-import { IconWithTitle } from '../../molecules/icon_with_contents/iconWithContents';
 
-
-import { SeriesOptionsType } from 'highcharts';
+import ReportArea from '../../organisms/report_area/reportArea';
 
 
 
@@ -52,7 +41,7 @@ type ReportDates = {
 
 export default function Dashboard(){
 
-    // 表示データ
+    // テスト表示データ
     const listItems:{title: string, description?: string, icon: React.ReactNode}[] = [
         {title: "本買った", description: "¥5,000", icon: <MenuBookIcon fontSize="small"/>},
         {title: "給料", description: "¥400,000", icon: <CreditCardIcon fontSize="small"/>},
@@ -82,7 +71,7 @@ export default function Dashboard(){
     const [seriesData, setSeriesData] = React.useState<DataSeriesType>({
         income: {
             name: 'Income',
-            data: [43934, 48656, 65165, 81827, 112143, 142383, 171533, 43934, 171533, 65165, 171533, 112143, 142383, 171533, 171533, 48656, 112143, 81827, 112143, 142383, 171533, 43934, 48656, 65165, 81827, 112143, 142383, 171533],
+            data: [],
             type: 'area',
             color: 'var(--my-color-pink)',
             fillColor: {
@@ -100,7 +89,7 @@ export default function Dashboard(){
         }, 
         expenses: {
             name: 'Expenses',
-            data: [24916, 37941, 29742, 29851, 32490, 30282, 38121],
+            data: [],
             type: 'area',
             color: 'var(--my-color-purple)',
             fillColor: {
@@ -200,24 +189,85 @@ export default function Dashboard(){
     // TODO：タブ押下時、月毎データ、日毎データにまとめる処理
     const createChartData = (income:DataStateType, expenses:DataStateType, isMonth:boolean) => {
 
-        let incomeSeries = [];
-        let expensesSeries = [];
+        let incomeSeries: number[] = [];
+        let expensesSeries: number[] = [];
 
         if(isMonth){
+            /* 月別 */
+
+            const maxDateNum = 12;
+            const selectYear  =  reportDateData.beginDate.getFullYear();
+
+            // 表示月の最終日付まで繰り返す
+            for(let i = 0; i < maxDateNum; i++){
+
+                // その日の金額
+                let incomeTotal = 0;
+                let expensesTotal = 0;
+
+                // 収入
+                income.forEach(e => {
+                    // 年月が一致してたら
+                    if(i === new Date(e.date).getMonth() && selectYear === new Date(e.date).getFullYear()){
+                        incomeTotal += e.amount;      // 金額を足す
+                    }
+                });
+
+                // 支出
+                expenses.forEach(e => {
+                    console.log(i === new Date(e.date).getDate(), i, new Date(e.date).getDate())
+                    // 年月が一致してたら
+                    if(i === new Date(e.date).getMonth() && selectYear === new Date(e.date).getFullYear()){
+                        expensesTotal += e.amount;    // 金額を足す
+                    }
+                });
+
+                incomeSeries.push(incomeTotal);
+                expensesSeries.push(expensesTotal);
+            }
 
         } else{
-            // ** 日別(指定した日付を含む7日間分)用のデータ ** 
-            // 取得した日付を日曜日始まりに変換
-            
-            // 該当の日付の
+
+            /* 日付別 */ 
+
+            const maxDateNum = reportDateData.endDate.getDate();
+            const selectMonth  =  reportDateData.beginDate.getMonth();
+
+            // 表示月の最終日付まで繰り返す
+            for(let i = 0; i < maxDateNum; i++){
+
+                // その日の金額
+                let incomeTotal = 0;
+                let expensesTotal = 0;
+
+                // 収入
+                income.forEach(e => {
+                    // 日付が一致してたら
+                    if(i === new Date(e.date).getDate() && selectMonth === new Date(e.date).getMonth()){
+                        incomeTotal += e.amount;      // 金額を足す
+                    }
+                });
+
+                // 支出
+                expenses.forEach(e => {
+                    console.log(i === new Date(e.date).getDate(), i, new Date(e.date).getDate())
+                    // 日付が一致してたら
+                    if(i === new Date(e.date).getDate() && selectMonth === new Date(e.date).getMonth()){
+                        expensesTotal += e.amount;    // 金額を足す
+                    }
+                });
+
+                incomeSeries.push(incomeTotal);
+                expensesSeries.push(expensesTotal);
+            }
+
         }
-        // 
 
         setSeriesData((data) => {
             return( {
                 income:{
                     name: 'Income',
-                    data: [43934, 48656, 65165, 81827, 112143, 142383, 171533, 43934, 48656, 65165, 81827, 112143, 142383, 171533, 43934, 48656, 65165, 81827, 112143, 142383, 171533],
+                    data: incomeSeries,
                     type: 'area',
                     color: 'var(--my-color-pink)',
                     fillColor: {
@@ -235,7 +285,7 @@ export default function Dashboard(){
                 }, 
                 expenses:{
                     name: 'Expenses',
-                    data: [24916, 37941, 29742, 29851, 32490, 30282, 38121],
+                    data: expensesSeries,
                     type: 'area',
                     color: 'var(--my-color-purple)',
                     fillColor: {
@@ -283,91 +333,16 @@ export default function Dashboard(){
         <div className={styles.topPageWrapper}>
 
             <Spacer size="s">
-                <MyCard darkMode={false} width="100%">
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            <Grid xs={4} sm={3} md={4}>
-                                <ContentsTitle 
-                                    title="レポート" 
-                                    subTitle={format(reportDateData.beginDate, 'yyyy/MM/dd') + '〜' + format(reportDateData.endDate, 'yyyy/MM/dd')}
-                                />
-                                <div className={styles.monthSwitchArea}>
-                                    <div onClick={() => changeReportMonth('back')}>＜ 前の月</div>
-                                    <div onClick={() => changeReportMonth('next')}>次の月 ＞</div>
-                                </div>
-                            </Grid>
-                            <Grid xs={4} sm={5} md={8}>
-                                <div className={styles.tabsWrapper}>
-                                    <HorizontalTabs tabItems={tabItems} borderColor={'var(--my-color-pink)'} selectValue={tabSelectVal} parentEvent={setTabState}/>
-                                </div>
-                            </Grid>
-                        </Grid>
-                    </Box>
-
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            <Grid xs={4} sm={3} md={4}>
-                                <div className={styles.totalExpensesTextArea}>
-                                    <div>
-                                    <div className={styles.bottomContent}>
-                                        <Tag text='収入' bgColor='--my-color-pink' small/>
-                                        <p className={styles.money}>{ '￥' + monthlyIncome.thisMonthTotal.toLocaleString() }</p>
-                                        <div className={styles.details}>
-                                            { monthlyIncome.firstMonthTotal > monthlyIncome.thisMonthTotal ? 
-                                                <SouthEastIcon className={`${styles.icon} ${'red'}`}/> : <NorthEastIcon className={`${styles.icon} ${'green'}`}/> 
-                                            }
-                                            <p className={styles.text}>前月より
-                                                { monthlyIncome.firstMonthTotal > monthlyIncome.thisMonthTotal ? 
-                                                    <span className='red'>¥{(monthlyIncome.firstMonthTotal - monthlyIncome.thisMonthTotal).toLocaleString()}</span>
-                                                    : <span className='green'>¥{(monthlyIncome.thisMonthTotal - monthlyIncome.firstMonthTotal).toLocaleString()}</span>
-                                                }
-                                                { monthlyIncome.firstMonthTotal > monthlyIncome.thisMonthTotal ? '減りました。' : '増えました。'}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className={styles.bottomContent}>
-                                        <Tag text='支出' bgColor='--my-color-purple' small/>
-                                        <p className={styles.money}>{ '￥' + monthlyExpenses.thisMonthTotal.toLocaleString() }</p>
-                                        <div className={styles.details}>
-                                            { monthlyExpenses.firstMonthTotal > monthlyExpenses.thisMonthTotal ? 
-                                                <SouthEastIcon className={`${styles.icon} ${'green'}`}/> : <NorthEastIcon className={`${styles.icon} ${'red'}`}/> 
-                                            }
-                                            <p className={styles.text}>前月より
-                                                { monthlyExpenses.firstMonthTotal > monthlyExpenses.thisMonthTotal ? 
-                                                    <span className='green'>¥{(monthlyExpenses.firstMonthTotal - monthlyExpenses.thisMonthTotal).toLocaleString()}</span>
-                                                    : <span className='red'>¥{(monthlyExpenses.thisMonthTotal - monthlyExpenses.firstMonthTotal).toLocaleString()}</span>
-                                                }
-                                                { monthlyExpenses.thisMonthTotal < monthlyExpenses.firstMonthTotal ? '減りました。' : '増えました。'}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </Grid>
-                            <Grid xs={4} sm={5} md={8}>
-                                {/* 日別：28〜31日 /  月別：12ヶ月 ごとに表示*/}
-                                <BaseLineCharts height='340' series={[seriesData.income, seriesData.expenses]} title='' subTitle='' />
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    <Line margin='--my-margin-s' />
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            <Grid xs={4} sm={4} md={3}>
-                                <IconWithTitle title='カテゴリ1' subTitle='今月の出費No1カテゴリ' icon={<CategoryIcon className={styles.iconWithTitleIcon} />} iconCircle />
-                            </Grid>
-                            <Grid xs={4} sm={4} md={3}>
-                                <IconWithTitle title='03/18' subTitle='今月の出費No1日' icon={<TodayIcon className={styles.iconWithTitleIcon} />} iconCircle />
-                            </Grid>
-                            <Grid xs={4} sm={4} md={3}>
-                                <IconWithTitle title='カテゴリ1' subTitle='今月の収入No1カテゴリ' secondary icon={<CategoryIcon className={styles.iconWithTitleIcon} />} iconCircle />
-                            </Grid>
-                            <Grid xs={4} sm={4} md={3}>
-                                <IconWithTitle title='03/18' subTitle='今月の収入No1日' secondary icon={<TodayIcon className={styles.iconWithTitleIcon} />} iconCircle />
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </MyCard>
+                <ReportArea 
+                    reportDateData={reportDateData}
+                    changeReportMonth={changeReportMonth}
+                    tabItems={tabItems}
+                    tabSelectVal={tabSelectVal}
+                    setTabState={setTabState}
+                    monthlyIncome={monthlyIncome}
+                    monthlyExpenses={monthlyExpenses}
+                    seriesData={seriesData}
+                />
             </Spacer>
 
             <Spacer size="s">

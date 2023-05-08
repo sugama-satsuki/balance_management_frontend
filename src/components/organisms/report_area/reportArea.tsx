@@ -16,7 +16,8 @@ import BaseLineCharts from "../../molecules/charts/baseLine";
 import { HorizontalTabs } from "../../molecules/tab_content/tabContent";
 
 /* import mui */ 
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 import SouthEastIcon from '@mui/icons-material/SouthEast';
 import NorthEastIcon from '@mui/icons-material/NorthEast';
 import TodayIcon from '@mui/icons-material/Today';

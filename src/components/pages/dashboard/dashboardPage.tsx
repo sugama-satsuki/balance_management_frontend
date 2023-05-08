@@ -21,7 +21,7 @@ import KebabDiningIcon from '@mui/icons-material/KebabDining';
 import { format, startOfWeek } from 'date-fns';
 import ja from 'date-fns/locale/ja';
 import axios from 'axios';
-import { DataSeriesType, DataStateType } from '../../../types/global';
+import { DataSeriesType, DataStateType, IdWithTextType, MonthlyDataType } from '../../../types/global';
 
 /* import template */
 import BaseLayout from '../../template/base_layout/baseLayout';
@@ -44,7 +44,7 @@ import { SeriesOptionsType } from 'highcharts';
 
 
 
-interface ReportDates {
+type ReportDates = {
     beginDate: Date,
     endDate: Date
 }
@@ -59,15 +59,13 @@ export default function Dashboard(){
         {title: "だんご食べた", description: "¥2,500", icon: <KebabDiningIcon fontSize="small"/>}
     ];
 
-    const tabItems:{text: string, id: string}[] = [
+    const tabItems:IdWithTextType[] = [
         {text: '日別', id: 'day'},
         {text: '月別', id: 'month'},
     ]
 
     // 今日の日付
     const today = new Date();
-    // 先月の1日の日付
-    const firstDate = new Date(today.getFullYear(), today.getMonth()-1, 1);
 
 
     const [reportDateData, setReportDateData] = React.useState<ReportDates>({
@@ -75,8 +73,8 @@ export default function Dashboard(){
         endDate: new Date(today.getFullYear(), today.getMonth() + 1, 0)
     });
 
-    const [monthlyIncome, setMonthlyIncome] = React.useState<{firstMonthTotal: number, thisMonthTotal: number}>({firstMonthTotal: 0, thisMonthTotal: 0});
-    const [monthlyExpenses, setMonthlyExpenses] = React.useState<{firstMonthTotal: number, thisMonthTotal: number}>({firstMonthTotal: 0, thisMonthTotal: 0});
+    const [monthlyIncome, setMonthlyIncome] = React.useState<MonthlyDataType>({firstMonthTotal: 0, thisMonthTotal: 0});
+    const [monthlyExpenses, setMonthlyExpenses] = React.useState<MonthlyDataType>({firstMonthTotal: 0, thisMonthTotal: 0});
 
     const [incomeData, setIncomeData] = React.useState<DataStateType>([]);
     const [expensesData, setExpensesData] = React.useState<DataStateType>([]);
@@ -84,7 +82,7 @@ export default function Dashboard(){
     const [seriesData, setSeriesData] = React.useState<DataSeriesType>({
         income: {
             name: 'Income',
-            data: [43934, 48656, 65165, 81827, 112143, 142383, 171533],
+            data: [43934, 48656, 65165, 81827, 112143, 142383, 171533, 43934, 171533, 65165, 171533, 112143, 142383, 171533, 171533, 48656, 112143, 81827, 112143, 142383, 171533, 43934, 48656, 65165, 81827, 112143, 142383, 171533],
             type: 'area',
             color: 'var(--my-color-pink)',
             fillColor: {
@@ -148,7 +146,7 @@ export default function Dashboard(){
         calcTotalData(income.data, expenses.data);
 
         // グラフ用日・月毎データにまとめる
-        createChartData(income.data, expenses.data, false, new Date());
+        createChartData(income.data, expenses.data, false);
 
     }
 
@@ -163,15 +161,15 @@ export default function Dashboard(){
         let e_fMonthTotal = 0;
         let e_tMonthTotal = 0;
 
-        console.log(income, expenses);
+        let selectDate = reportDateData.beginDate;
+        let firstDate = new Date(selectDate.getFullYear(), selectDate.getMonth()-1, 1);
 
-        
         // 収入の計算
         income.forEach((val, i) => {
             let valDate  = new Date(val.date);
 
             // 同じ月だったら
-            if(valDate.getFullYear() === today.getFullYear() && valDate.getMonth() === today.getMonth()) {
+            if(valDate.getFullYear() === selectDate.getFullYear() && valDate.getMonth() === selectDate.getMonth()) {
                 i_tMonthTotal += val.amount;
             }
             // 前の月だったら
@@ -180,13 +178,12 @@ export default function Dashboard(){
             }
         })
 
-
         // 支出の計算
         expenses.forEach((val, i) => {
             let valDate  = new Date(val.date);
 
             // 同じ月だったら
-            if(valDate.getFullYear() === today.getFullYear() && valDate.getMonth() === today.getMonth()) {
+            if(valDate.getFullYear() === selectDate.getFullYear() && valDate.getMonth() === selectDate.getMonth()) {
                 e_tMonthTotal += val.amount;
             }
             // 前の月だったら
@@ -201,7 +198,7 @@ export default function Dashboard(){
 
 
     // TODO：タブ押下時、月毎データ、日毎データにまとめる処理
-    const createChartData = (income:DataStateType, expenses:DataStateType, isMonth:boolean, startDay:Date) => {
+    const createChartData = (income:DataStateType, expenses:DataStateType, isMonth:boolean) => {
 
         let incomeSeries = [];
         let expensesSeries = [];
@@ -220,7 +217,7 @@ export default function Dashboard(){
             return( {
                 income:{
                     name: 'Income',
-                    data: [43934, 48656, 65165, 81827, 112143, 142383, 171533],
+                    data: [43934, 48656, 65165, 81827, 112143, 142383, 171533, 43934, 48656, 65165, 81827, 112143, 142383, 171533, 43934, 48656, 65165, 81827, 112143, 142383, 171533],
                     type: 'area',
                     color: 'var(--my-color-pink)',
                     fillColor: {
@@ -275,6 +272,9 @@ export default function Dashboard(){
                 :
                 new Date(oldEndDate.getFullYear(), oldEndDate.getMonth(), 0)
         });
+        console.log('call change report');
+        calcTotalData(incomeData, expensesData);
+        createChartData(incomeData, expensesData, tabSelectVal === tabItems[1].id);
     }
 
 
@@ -345,7 +345,7 @@ export default function Dashboard(){
                                 </div>
                             </Grid>
                             <Grid xs={4} sm={5} md={8}>
-                                {/* 日別：1週間ごとに表示 /  月別：7ヶ月ごとに表示*/}
+                                {/* 日別：28〜31日 /  月別：12ヶ月 ごとに表示*/}
                                 <BaseLineCharts height='340' series={[seriesData.income, seriesData.expenses]} title='' subTitle='' />
                             </Grid>
                         </Grid>

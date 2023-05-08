@@ -42,3 +42,20 @@ export type DataSeriesType = {
     income: SeriesOptionsType,
     expenses: SeriesOptionsType
 }
+
+// ダッシュボード：Reportエリアのレポート日付
+export type ReportDatesType = {
+    beginDate: Date,
+    endDate: Date
+}
+
+
+export type IdWithTextType = {
+    text: string, 
+    id: string
+}
+
+export type MonthlyDataType = {
+    firstMonthTotal: number, 
+    thisMonthTotal: number
+}

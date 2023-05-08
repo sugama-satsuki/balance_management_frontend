@@ -78,3 +78,24 @@
     font-size: var(--my-size-icon);
     box-sizing: border-box;
 }
+
+.monthSwitchArea {
+    display: flex;
+    align-items: center;
+    justify-self: left;
+    margin-top: var(--my-margin-xs);
+}
+.monthSwitchArea > div{
+    display: flex;
+    align-items: center;
+    justify-self: left;
+    margin-right: var(--my-margin-s);
+    transition: all 0.5s;
+    color: var(--my-color-navy);
+    font-weight: bold;
+    font-size: var(--my-font-size-smallP);
+}
+.monthSwitchArea > div:hover{
+    opacity: 0.5;
+    transition: all 0.5s;
+}

@@ -44,8 +44,7 @@ import { SeriesOptionsType } from 'highcharts';
 
 
 
-interface ExpensesState {
-    selectMonth: number,
+interface ReportDates {
     beginDate: Date,
     endDate: Date
 }
@@ -71,8 +70,7 @@ export default function Dashboard(){
     const firstDate = new Date(today.getFullYear(), today.getMonth()-1, 1);
 
 
-    const [reportDateData, setReportDateData] = React.useState<ExpensesState>({
-        selectMonth: today.getMonth(),
+    const [reportDateData, setReportDateData] = React.useState<ReportDates>({
         beginDate: new Date(today.getFullYear(), today.getMonth(), 1),
         endDate: new Date(today.getFullYear(), today.getMonth() + 1, 0)
     });
@@ -260,6 +258,25 @@ export default function Dashboard(){
         });
     }
 
+    // レポート月変更ボタン押下時処理
+    const changeReportMonth = (action: 'next' | 'back') => {
+
+        let oldBeginDate = reportDateData.beginDate;
+        let oldEndDate = reportDateData.endDate;
+
+        setReportDateData({
+            beginDate: action === 'next' ? 
+                new Date(oldBeginDate.getFullYear(), oldBeginDate.getMonth()+1, oldBeginDate.getDate())
+                :
+                new Date(oldBeginDate.getFullYear(), oldBeginDate.getMonth()-1, oldBeginDate.getDate())
+                ,
+            endDate: action === 'next' ?
+                new Date(oldEndDate.getFullYear(), oldEndDate.getMonth()+2, 0)
+                :
+                new Date(oldEndDate.getFullYear(), oldEndDate.getMonth(), 0)
+        });
+    }
+
 
     return(
         <BaseLayout menuNumber={1} pageTitle="ダッシュボード">
@@ -274,6 +291,10 @@ export default function Dashboard(){
                                     title="レポート" 
                                     subTitle={format(reportDateData.beginDate, 'yyyy/MM/dd') + '〜' + format(reportDateData.endDate, 'yyyy/MM/dd')}
                                 />
+                                <div className={styles.monthSwitchArea}>
+                                    <div onClick={() => changeReportMonth('back')}>＜ 前の月</div>
+                                    <div onClick={() => changeReportMonth('next')}>次の月 ＞</div>
+                                </div>
                             </Grid>
                             <Grid xs={4} sm={5} md={8}>
                                 <div className={styles.tabsWrapper}>

@@ -111,6 +111,7 @@ export default function Dashboard(){
 
     const setTabState = (id:string) => {
         setTabSelectVal(id);
+        createChartData(incomeData, expensesData, id === tabItems[1].id);
     }
 
 
@@ -194,7 +195,7 @@ export default function Dashboard(){
 
         if(isMonth){
             /* 月別 */
-
+            console.log('call month')
             const maxDateNum = 12;
             const selectYear  =  reportDateData.beginDate.getFullYear();
 
@@ -250,7 +251,6 @@ export default function Dashboard(){
 
                 // 支出
                 expenses.forEach(e => {
-                    console.log(i === new Date(e.date).getDate(), i, new Date(e.date).getDate())
                     // 日付が一致してたら
                     if(i === new Date(e.date).getDate() && selectMonth === new Date(e.date).getMonth()){
                         expensesTotal += e.amount;    // 金額を足す
@@ -269,7 +269,7 @@ export default function Dashboard(){
                     name: 'Income',
                     data: incomeSeries,
                     type: 'area',
-                    color: 'var(--my-color-pink)',
+                    color: isMonth ? 'var(--my-color-green)' : 'var(--my-color-pink)',
                     fillColor: {
                         linearGradient: {
                             x1: 1,
@@ -278,7 +278,7 @@ export default function Dashboard(){
                             y2: 1,
                         },
                         stops: [
-                            [0, 'var(--my-color-pink)'],
+                            [0, isMonth ? 'var(--my-color-green)' : 'var(--my-color-pink)'],
                             [1, 'var(--my-color-white)']
                         ]
                     }
@@ -287,7 +287,7 @@ export default function Dashboard(){
                     name: 'Expenses',
                     data: expensesSeries,
                     type: 'area',
-                    color: 'var(--my-color-purple)',
+                    color: isMonth ? 'var(--my-color-orange)' : 'var(--my-color-purple)',
                     fillColor: {
                         linearGradient: {
                             x1: 0,
@@ -296,7 +296,7 @@ export default function Dashboard(){
                             y2: 1,
                         },
                         stops: [
-                            [0, 'var(--my-color-purple)'],
+                            [0, isMonth ? 'var(--my-color-orange)' : 'var(--my-color-purple)'],
                             [1, 'var(--my-color-white)']
                         ]
                     }
@@ -322,7 +322,6 @@ export default function Dashboard(){
                 :
                 new Date(oldEndDate.getFullYear(), oldEndDate.getMonth(), 0)
         });
-        console.log('call change report');
         calcTotalData(incomeData, expensesData);
         createChartData(incomeData, expensesData, tabSelectVal === tabItems[1].id);
     }

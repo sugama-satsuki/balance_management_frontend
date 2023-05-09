@@ -87,7 +87,6 @@ export default function ListPage() {
 
         setIncomeData([
             [0, false, 'カテゴリ', '収入名', '金額', '日付', 'メモ'],
-            // { id: 0, checkFlag: false, category: 'カテゴリ', title: '収入名', amount: '金額', date: '日付', memo: 'メモ' },
             ...income.data.map((val:DataType, index:number) => {
                 return (
                     [
@@ -105,7 +104,6 @@ export default function ListPage() {
 
         setExpensesData([
             [0, false, 'カテゴリ', '支出名', '金額', '日付', 'メモ'],
-            // { id: 0, checkFlag: false, category: 'カテゴリ', title: '支出名', amount: '金額', date: '日付', memo: 'メモ' },
             ...expenses.data.map((val:DataType, index:number) => {
                 return (
                     [
@@ -175,9 +173,7 @@ export default function ListPage() {
 
 
     const setData = (data: DataStateType) => {
-        
         setSelectData([displayDataState, data[2].props.text, data[3], data[4], new Date(data[5]), data[6]]);
-        console.log('data: ', data, displayDataState)
     }
 
     // セル押下時処理

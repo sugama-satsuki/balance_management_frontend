@@ -127,8 +127,7 @@ export default function AddDataPopup(props: PropsType) {
 
     const onChangeDate= (value: Date, selectionState?: PickerSelectionState | undefined) => {
         // 日付
-        setInputDate(value);
-        setInputDate(value);
+        setInputDate((value) => {return value});
     }
 
     const onChangeMemo = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -139,6 +138,16 @@ export default function AddDataPopup(props: PropsType) {
 
 
     /* --- その他処理 --- */
+
+    // フォームデータを空に
+    const emptyingFormData = () => {
+        setSelectType(data[0]);
+        setCategory(data[1]);
+         setTitle(data[2]);
+        setAmount(data[3]);
+        setInputDate(data[4]);
+        setMemo(data[5]);
+    }
 
     // 文字のエスケープ
     const escape = (text: string):[string, boolean] => {
@@ -193,7 +202,6 @@ export default function AddDataPopup(props: PropsType) {
                 type: 'ok'
             },
         ]
-
         setValidationCheckState(validationCheck);
 
         return validationCheck;
@@ -217,7 +225,21 @@ export default function AddDataPopup(props: PropsType) {
             setMsgFlag([errFlag, 5]);
         }else{
         // エラーがなかったら登録する
+
+            // データの登録
             dataRegister(e);
+
+            // メッセージの表示
+            setMsgFlag([true, 0]);
+
+            // リストデータ再取得
+            reloadData();
+
+            // ポップアップを閉じる
+            onClickCloseBtn();
+
+            // フォーム表示データを空に
+            emptyingFormData();
         }
     }
 
@@ -239,15 +261,6 @@ export default function AddDataPopup(props: PropsType) {
 
             console.log(data)
             await axios.post('/data/register', data);
-
-            // メッセージの表示
-            setMsgFlag([true, 0]);
-
-            // リストデータ再取得
-            reloadData();
-
-            // ポップアップを閉じる
-            onClickCloseBtn();
 
         } catch(err) {
             setMsgFlag([true, 6]);

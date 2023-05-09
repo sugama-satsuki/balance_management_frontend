@@ -1,11 +1,12 @@
 .header {
     width: 100%;
-    position: absolute;
+    position: fixed;
+    z-index: 10;
     top: 0;
     right: 0;
     height: var(--my-size-headerH);
     background-color: var(--my-color-white);
-    box-shadow: 0px 0.5px 4px 0.5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 2px 0.5px rgba(0, 0, 0, 0.1);
 }
 
 .header .headerInnerWrapper {

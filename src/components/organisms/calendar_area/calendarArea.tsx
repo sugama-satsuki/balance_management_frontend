@@ -7,6 +7,7 @@ import styles from './calendarArea.module.css';
 import { Box } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers";
+import { PickerSelectionState } from "@mui/x-date-pickers/internals";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
@@ -21,10 +22,18 @@ import ListWithIcon from "../../molecules/list/list";
 
 import { ja } from "date-fns/locale";
 import { format } from "date-fns";
+import { DataStateType } from "../../../types/global";
 
 
+type PropsType = {
+    iData: DataStateType,
+    eData: DataStateType
+}
 
-export default function CalendarArea() {
+
+export default function CalendarArea(props: PropsType) {
+
+    const { iData, eData } = props;
 
 
     // テスト表示データ
@@ -34,7 +43,9 @@ export default function CalendarArea() {
         {title: "だんご食べた", description: "¥2,500", icon: <KebabDiningIcon fontSize="small"/>}
     ];
 
-    const changeCalendar = () => {
+    const changeCalendar = (val: "partial" | "shallow" | "finish" | null | undefined, selectionState: PickerSelectionState | undefined) => {
+
+        console.log(val, selectionState);
 
     }
 
@@ -45,7 +56,14 @@ export default function CalendarArea() {
                     <Grid xs={4} sm={4} md={4}>
                         <MyCard darkMode={false} width="100%">
                             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ja}>
-                                <DateCalendar displayWeekNumber onChange={changeCalendar} />
+                                <DateCalendar 
+                                    displayWeekNumber 
+                                    onChange={
+                                        (val: "partial" | "shallow" | "finish" | null | undefined, selectDate:  PickerSelectionState | undefined) => {
+                                            changeCalendar(val, selectDate)
+                                        }
+                                    } 
+                                />
                             </LocalizationProvider>      
                         </MyCard>                      
                     </Grid>

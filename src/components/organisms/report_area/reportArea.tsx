@@ -29,31 +29,28 @@ import { format } from "date-fns";
 import axios from "axios";
 
 
+type PropsType = {
+    iData: DataStateType,
+    eData: DataStateType
+}
 
-export default function ReportArea() {
 
+export default function ReportArea(props: PropsType) {
+
+    const { iData, eData } = props;
+
+    /* 変数宣言 */ 
     let xAxisLabelArr:string[] = [];
 
+    /* 定数宣言 */ 
     const tabItems:IdWithTextType[] = [
         {text: '日別', id: 'day'},
         {text: '月別', id: 'month'},
     ]
+    const today = new Date();    // 今日の日付
 
-    React.useEffect(() => {
-        let diffDay = Math.floor((reportDateData.beginDate.getTime() - reportDateData.endDate.getTime()) / (1000 * 60 * 60 * 24));
-        
-        for(let i = 1; i <= diffDay; i++) {
-            xAxisLabelArr.push(String(i));
-        }
-
-    }, []);
-
-
-
-    // 今日の日付
-    const today = new Date();
-
-
+    
+    /* state宣言 */ 
     const [reportDateData, setReportDateData] = React.useState<ReportDatesType>({
         beginDate: new Date(today.getFullYear(), today.getMonth(), 1),
         endDate: new Date(today.getFullYear(), today.getMonth() + 1, 0)
@@ -62,8 +59,8 @@ export default function ReportArea() {
     const [monthlyIncome, setMonthlyIncome] = React.useState<MonthlyDataType>({firstMonthTotal: 0, thisMonthTotal: 0});
     const [monthlyExpenses, setMonthlyExpenses] = React.useState<MonthlyDataType>({firstMonthTotal: 0, thisMonthTotal: 0});
 
-    const [incomeData, setIncomeData] = React.useState<DataStateType>([]);
-    const [expensesData, setExpensesData] = React.useState<DataStateType>([]);
+    const [incomeData, setIncomeData] = React.useState<DataStateType>(iData);
+    const [expensesData, setExpensesData] = React.useState<DataStateType>(eData);
     
     const [seriesData, setSeriesData] = React.useState<DataSeriesType>({
         income: {
@@ -112,30 +109,32 @@ export default function ReportArea() {
     }
 
 
-    // 初回のみ実行
+
     React.useEffect(() => {
-        // データ取得
-        fetchData();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        console.log(iData);
+        console.log(eData);
 
+        setIncomeData((incomeData) => {
+            // console.log(iData)
+            return incomeData;
+        })
+        setExpensesData((expensesData) => {
+            // console.log(eData);
+            return expensesData;
+        })
 
-    // dataの取得
-    const fetchData = async () => {
-        const income = await axios.get("/data/income/642e75bea7b120ca2fa41655");
-        const expenses = await axios.get("/data/expenses/642e75bea7b120ca2fa41655");
+        let diffDay = Math.floor((reportDateData.beginDate.getTime() - reportDateData.endDate.getTime()) / (1000 * 60 * 60 * 24));
+        
+        for(let i = 1; i <= diffDay; i++) {
+            xAxisLabelArr.push(String(i));
+        }
 
-        setIncomeData(income.data);
-        setExpensesData(expenses.data);
+        calcTotalData(iData, eData, reportDateData);
+        createChartData(iData, eData, false, reportDateData);
 
-        // 月の収入、支出の総額を画面変数に割り当てる
-        calcTotalData(income.data, expenses.data, reportDateData);
+    }, []);
 
-        // グラフ用日・月毎データにまとめる
-        createChartData(income.data, expenses.data, false, reportDateData);
-
-    }
 
 
     /* 

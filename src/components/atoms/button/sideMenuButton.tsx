@@ -19,7 +19,6 @@ export default function SideMenuButton(props: Props) {
     const { text, url, isSelect, isMenuOpen, children, onClick, num } = props;
 
     function menuButtonOnClick(e: React.MouseEvent<HTMLAnchorElement>, num:number) {
-        console.log(num)
         onClick(e, num);
     }
 

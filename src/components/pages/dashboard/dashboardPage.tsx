@@ -111,7 +111,7 @@ export default function Dashboard(){
 
     const setTabState = (id:string) => {
         setTabSelectVal(id);
-        createChartData(incomeData, expensesData, id === tabItems[1].id);
+        createChartData(incomeData, expensesData, id === tabItems[1].id, reportDateData);
     }
 
 
@@ -133,10 +133,10 @@ export default function Dashboard(){
         setExpensesData(expenses.data);
 
         // 月の収入、支出の総額を画面変数に割り当てる
-        calcTotalData(income.data, expenses.data);
+        calcTotalData(income.data, expenses.data, reportDateData);
 
         // グラフ用日・月毎データにまとめる
-        createChartData(income.data, expenses.data, false);
+        createChartData(income.data, expenses.data, false, reportDateData);
 
     }
 
@@ -144,14 +144,14 @@ export default function Dashboard(){
     /* 
      * 今月と先月の収支の計算
      */
-    const calcTotalData = (income:DataStateType, expenses:DataStateType) => {
+    const calcTotalData = (income:DataStateType, expenses:DataStateType, reportDate:ReportDates) => {
 
         let i_fMonthTotal = 0;
         let i_tMonthTotal = 0;
         let e_fMonthTotal = 0;
         let e_tMonthTotal = 0;
 
-        let selectDate = reportDateData.beginDate;
+        let selectDate = reportDate.beginDate;
         let firstDate = new Date(selectDate.getFullYear(), selectDate.getMonth()-1, 1);
 
         // 収入の計算
@@ -182,22 +182,23 @@ export default function Dashboard(){
             }
         })
 
-        setMonthlyIncome({firstMonthTotal: i_fMonthTotal, thisMonthTotal: i_tMonthTotal});
-        setMonthlyExpenses({firstMonthTotal: e_fMonthTotal, thisMonthTotal: e_tMonthTotal});
+        setMonthlyIncome(() => { return {firstMonthTotal: i_fMonthTotal, thisMonthTotal: i_tMonthTotal} });
+        setMonthlyExpenses(() => { return {firstMonthTotal: e_fMonthTotal, thisMonthTotal: e_tMonthTotal} });
     }
 
 
-    // TODO：タブ押下時、月毎データ、日毎データにまとめる処理
-    const createChartData = (income:DataStateType, expenses:DataStateType, isMonth:boolean) => {
+
+    // タブ押下時、月毎データ、日毎データにまとめる処理
+    const createChartData = (income:DataStateType, expenses:DataStateType, isMonth:boolean, reportDate:ReportDates) => {
 
         let incomeSeries: number[] = [];
         let expensesSeries: number[] = [];
 
+        // TODO: 年度が違う同じ月で金額が同じになっているので、修正
         if(isMonth){
             /* 月別 */
-            console.log('call month')
             const maxDateNum = 12;
-            const selectYear  =  reportDateData.beginDate.getFullYear();
+            const selectYear  =  reportDate.beginDate.getFullYear();
 
             // 表示月の最終日付まで繰り返す
             for(let i = 0; i < maxDateNum; i++){
@@ -216,7 +217,6 @@ export default function Dashboard(){
 
                 // 支出
                 expenses.forEach(e => {
-                    console.log(i === new Date(e.date).getDate(), i, new Date(e.date).getDate())
                     // 年月が一致してたら
                     if(i === new Date(e.date).getMonth() && selectYear === new Date(e.date).getFullYear()){
                         expensesTotal += e.amount;    // 金額を足す
@@ -231,8 +231,8 @@ export default function Dashboard(){
 
             /* 日付別 */ 
 
-            const maxDateNum = reportDateData.endDate.getDate();
-            const selectMonth  =  reportDateData.beginDate.getMonth();
+            const maxDateNum = reportDate.endDate.getDate();
+            const selectMonth  =  reportDate.beginDate.getMonth();
 
             // 表示月の最終日付まで繰り返す
             for(let i = 0; i < maxDateNum; i++){
@@ -263,6 +263,7 @@ export default function Dashboard(){
 
         }
 
+        // データのセット
         setSeriesData((data) => {
             return( {
                 income:{
@@ -305,13 +306,17 @@ export default function Dashboard(){
         });
     }
 
-    // レポート月変更ボタン押下時処理
+
+
+    /*
+     * レポート月変更ボタン押下時処理
+     */
     const changeReportMonth = (action: 'next' | 'back') => {
 
         let oldBeginDate = reportDateData.beginDate;
         let oldEndDate = reportDateData.endDate;
 
-        setReportDateData({
+        let reportDate = {
             beginDate: action === 'next' ? 
                 new Date(oldBeginDate.getFullYear(), oldBeginDate.getMonth()+1, oldBeginDate.getDate())
                 :
@@ -321,9 +326,12 @@ export default function Dashboard(){
                 new Date(oldEndDate.getFullYear(), oldEndDate.getMonth()+2, 0)
                 :
                 new Date(oldEndDate.getFullYear(), oldEndDate.getMonth(), 0)
-        });
-        calcTotalData(incomeData, expensesData);
-        createChartData(incomeData, expensesData, tabSelectVal === tabItems[1].id);
+        }
+
+        setReportDateData(() => { return reportDate });
+
+        calcTotalData(incomeData, expensesData, reportDate);
+        createChartData(incomeData, expensesData, tabSelectVal === tabItems[1].id, reportDate);
     }
 
 

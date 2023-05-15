@@ -45,6 +45,17 @@ export default function ReportArea(props: PropsType) {
 
     const {reportDateData, changeReportMonth, tabItems, tabSelectVal, setTabState, monthlyIncome, monthlyExpenses, seriesData} = props;
 
+    let xAxisLabelArr:string[] = [];
+
+    React.useEffect(() => {
+        let diffDay = Math.floor((reportDateData.beginDate.getTime() - reportDateData.endDate.getTime()) / (1000 * 60 * 60 * 24));
+        
+        for(let i = 1; i <= diffDay; i++) {
+            xAxisLabelArr.push(String(i));
+        }
+
+    }, [])
+
     return(
         <MyCard darkMode={false} width="100%">
             <Box sx={{ flexGrow: 1 }}>
@@ -109,7 +120,7 @@ export default function ReportArea(props: PropsType) {
                     </Grid>
                     <Grid xs={4} sm={5} md={8}>
                         {/* 日別：28〜31日 /  月別：12ヶ月 ごとに表示*/}
-                        <BaseLineCharts height='340' series={[seriesData.income, seriesData.expenses]} title='' subTitle='' />
+                        <BaseLineCharts height='340' series={[seriesData.income, seriesData.expenses]} title='' subTitle='' xAxisCategory={xAxisLabelArr} />
                     </Grid>
                 </Grid>
             </Box>

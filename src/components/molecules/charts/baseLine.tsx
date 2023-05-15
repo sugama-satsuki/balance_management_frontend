@@ -13,12 +13,14 @@ type Props = {
     title?: string,
     subTitle?: string,
     yAxisTitle?: string,
-    xAxisTitle?: string
+    xAxisTitle?: string,
+    xAxisCategory?: string[],
+    yAxisCategory?: string[]
 }
 
 export default function BaseLineCharts(props:Props) {
 
-    const {height, series, title, subTitle, yAxisTitle} = props;
+    const {height, series, title, subTitle, xAxisTitle, yAxisTitle, xAxisCategory, yAxisCategory} = props;
 
     // Highcahrtsの設定
     // const [chartOptions, setChartOption] = useState<Highcharts.Options>({
@@ -35,13 +37,17 @@ export default function BaseLineCharts(props:Props) {
         },
     
         yAxis: {
+            categories: yAxisCategory,
             title: {
                 text: yAxisTitle
             }
         },
     
         xAxis: {
-            visible: false
+            categories: xAxisCategory,
+            title: {
+                text: xAxisTitle
+            },
         },
     
         legend: {

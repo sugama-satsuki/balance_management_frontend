@@ -5,14 +5,7 @@
 .topPageWrapper {
    
 }
-.flexItemWrapper {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-}
-.flexItemWrapper .flexItem {
-    flex: 0 1 20%;
-}
+
 
 .flexItemLeftWrapper {
     display: flex;

@@ -52,8 +52,6 @@ export default function CalendarArea(props: PropsType) {
      */ 
     const changeCalendar = (val: "partial" | "shallow" | "finish" | null | undefined, selectionState: PickerSelectionState | undefined) => {
 
-        console.log(val, selectionState);
-
         let valDate = val !== null && val !== undefined ? new Date(val): new Date();
 
         let data:DataStateType = pickOutDayData(
@@ -62,6 +60,8 @@ export default function CalendarArea(props: PropsType) {
                                     valDate.getMonth(),
                                     valDate.getDate()
                                 );
+        console.log(iData, data);
+        console.log(createItemData(data))
 
         setListItems(createItemData(data));
         setListDate(valDate);
@@ -69,10 +69,16 @@ export default function CalendarArea(props: PropsType) {
     }
 
 
-    // TODO:リストコンポーネントに渡す値を作る
+    // リストコンポーネントに渡す値を作る関数
     const createItemData = (dataList: DataStateType): ListItemDataType[] => {
 
-        let result: ListItemDataType[] = [];
+        const result: ListItemDataType[] = dataList.map((val, i) => {
+            return ({
+                title: val.title, 
+                description: '¥' + val.amount.toLocaleString(), 
+                icon: <MenuBookIcon fontSize="small"/>
+            });
+        })
 
         return result;
     }

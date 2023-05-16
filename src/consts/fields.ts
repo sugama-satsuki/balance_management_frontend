@@ -1,5 +1,10 @@
 
-export const fields = {
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import React from 'react-dom/client';
+import { FieldsType } from '../types/global';
+
+
+export const fields: FieldsType = {
     // メッセージ一覧
     messageList: [
         { type: 's', msg: '正常に登録しました。', id: 'S001'},
@@ -14,5 +19,5 @@ export const fields = {
         { type: 'e', msg: '削除する行にチェックを入れてから削除ボタンを押してください。', id: 'E007'}
     ],
     // テーブルの横幅指定
-    tableCellWidth: [ 0, 0, 4, 4, 4, 3, 5 ]
+    tableCellWidth: [ 0, 0, 4, 4, 4, 3, 5 ],
 }

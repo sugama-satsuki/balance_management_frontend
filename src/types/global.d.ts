@@ -66,3 +66,9 @@ export type ListItemDataType = {
     description?: string, 
     icon: React.ReactNode
 }
+
+
+export type FieldsType = {
+    messageList: { type: string, msg: string, id: string}[],
+    tableCellWidth: number[],
+}

@@ -47,6 +47,13 @@ export default function CalendarArea(props: PropsType) {
 
         console.log(val, selectionState);
 
+        let data = [];
+
+        iData.forEach((val, index) => {
+            if(val.createDate)
+            data.push(val)
+        })
+
     }
 
     return (

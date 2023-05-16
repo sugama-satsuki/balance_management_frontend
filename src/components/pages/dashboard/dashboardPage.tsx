@@ -46,14 +46,6 @@ export default function Dashboard(){
         const income = await axios.get("/data/income/642e75bea7b120ca2fa41655");
         const expenses = await axios.get("/data/expenses/642e75bea7b120ca2fa41655");
 
-        // console.log(
-        //     income.data,
-        //     expenses.data
-        // )
-
-        // setIncomeData(() => { return income.data });
-        // setExpensesData(() => { return expenses.data });
-
         return [income.data, expenses.data];
     }
 

@@ -112,15 +112,10 @@ export default function ReportArea(props: PropsType) {
 
     React.useEffect(() => {
 
-        console.log(iData);
-        console.log(eData);
-
         setIncomeData((incomeData) => {
-            // console.log(iData)
             return incomeData;
         })
         setExpensesData((expensesData) => {
-            // console.log(eData);
             return expensesData;
         })
 
@@ -142,82 +137,102 @@ export default function ReportArea(props: PropsType) {
      */
     const calcTotalData = (income:DataStateType, expenses:DataStateType, reportDate:ReportDatesType) => {
 
-        let i_fMonthTotal = 0;
-        let i_tMonthTotal = 0;
-        let e_fMonthTotal = 0;
-        let e_tMonthTotal = 0;
-
         let selectDate = reportDate.beginDate;
         let firstDate = new Date(selectDate.getFullYear(), selectDate.getMonth()-1, 1);
 
         // 収入の計算
-        income.forEach((val, i) => {
-            let valDate  = new Date(val.date);
-
-            // 同じ月だったら
-            if(valDate.getFullYear() === selectDate.getFullYear() && valDate.getMonth() === selectDate.getMonth()) {
-                i_tMonthTotal += val.amount;
-            }
-            // 前の月だったら
-            if(valDate.getFullYear() === firstDate.getFullYear() && valDate.getMonth() === firstDate.getMonth()) {
-                i_fMonthTotal += val.amount;
-            }
-        })
+        let [i_tMonthTotal, i_fMonthTotal] = countMonthAmount(
+                                                    income, 
+                                                    selectDate.getFullYear(), 
+                                                    selectDate.getMonth(), 
+                                                    true, 
+                                                    firstDate.getFullYear(), 
+                                                    firstDate.getMonth()
+                                                );
 
         // 支出の計算
-        expenses.forEach((val, i) => {
-            let valDate  = new Date(val.date);
-
-            // 同じ月だったら
-            if(valDate.getFullYear() === selectDate.getFullYear() && valDate.getMonth() === selectDate.getMonth()) {
-                e_tMonthTotal += val.amount;
-            }
-            // 前の月だったら
-            if(valDate.getFullYear() === firstDate.getFullYear() && valDate.getMonth() === firstDate.getMonth()) {
-                e_fMonthTotal += val.amount;
-            }
-        })
+        let [e_tMonthTotal, e_fMonthTotal] = countMonthAmount(
+                                                expenses, 
+                                                selectDate.getFullYear(), 
+                                                selectDate.getMonth(), 
+                                                true, 
+                                                firstDate.getFullYear(), 
+                                                firstDate.getMonth()
+                                            );
 
         setMonthlyIncome(() => { return {firstMonthTotal: i_fMonthTotal, thisMonthTotal: i_tMonthTotal} });
         setMonthlyExpenses(() => { return {firstMonthTotal: e_fMonthTotal, thisMonthTotal: e_tMonthTotal} });
     }
 
 
+    // 一致してたら、渡した条件に一致する時のみカウントする関数
+    const countMonthAmount = (amountList: DataStateType, terms1: number, terms2: number, countFirstMonth: boolean, terms3?: number, terms4?: number) => {
 
-    // タブ押下時、月毎データ、日毎データにまとめる処理
+        let total = 0;
+        let total2 = 0;
+        let result:number[] = [];
+
+        amountList.forEach((val, i) => {
+            let valDate  = new Date(val.date);
+
+            // 当月
+            if(valDate.getFullYear() === terms1 && valDate.getMonth() === terms2) {
+                total += val.amount;
+            }
+            // 先月
+            if(countFirstMonth){
+                if(valDate.getFullYear() === terms3 && valDate.getMonth() === terms4) {
+                    total2 += val.amount;
+                }
+            }
+        })
+        result.push(total);
+        if(countFirstMonth) result.push(total2);
+
+        return result;
+    }
+
+
+
+    // 日毎の収支合計を返す関数
+    const countDayAmount = (amountList: DataStateType, termsYear: number, termsMonth: number, termsDate: number) => {
+
+        let total = 0;
+
+        amountList.forEach((val, i) => {
+            let valDate  = new Date(val.date);
+            // 同じ月だったら
+            if(valDate.getFullYear() === termsYear && valDate.getMonth() === termsMonth && valDate.getDate() === termsDate) {
+                total += val.amount;
+            }
+            
+        })
+
+        return total;
+    }
+
+
+
+
+    // チャート用の月毎データ、日毎データにまとめる処理
     const createChartData = (income:DataStateType, expenses:DataStateType, isMonth:boolean, reportDate:ReportDatesType) => {
 
         let incomeSeries: number[] = [];
         let expensesSeries: number[] = [];
 
-        // TODO: 年度が違う同じ月で金額が同じになっているので、修正
+        let selectDate = reportDate.beginDate;
+
         if(isMonth){
             /* 月別 */
             const maxDateNum = 12;
-            const selectYear  =  reportDate.beginDate.getFullYear();
 
             // 表示月の最終日付まで繰り返す
             for(let i = 0; i < maxDateNum; i++){
-
-                // その日の金額
-                let incomeTotal = 0;
-                let expensesTotal = 0;
-
                 // 収入
-                income.forEach(e => {
-                    // 年月が一致してたら
-                    if(i === new Date(e.date).getMonth() && selectYear === new Date(e.date).getFullYear()){
-                        incomeTotal += e.amount;      // 金額を足す
-                    }
-                });
+                let [incomeTotal] = countMonthAmount(income, selectDate.getFullYear(), i, false);
 
                 // 支出
-                expenses.forEach(e => {
-                    // 年月が一致してたら
-                    if(i === new Date(e.date).getMonth() && selectYear === new Date(e.date).getFullYear()){
-                        expensesTotal += e.amount;    // 金額を足す
-                    }
-                });
+                let [expensesTotal] = countMonthAmount(expenses, selectDate.getFullYear(), i, false);
 
                 incomeSeries.push(incomeTotal);
                 expensesSeries.push(expensesTotal);
@@ -226,32 +241,16 @@ export default function ReportArea(props: PropsType) {
         } else{
 
             /* 日付別 */ 
-
             const maxDateNum = reportDate.endDate.getDate();
-            const selectMonth  =  reportDate.beginDate.getMonth();
 
             // 表示月の最終日付まで繰り返す
             for(let i = 0; i < maxDateNum; i++){
 
-                // その日の金額
-                let incomeTotal = 0;
-                let expensesTotal = 0;
-
                 // 収入
-                income.forEach(e => {
-                    // 日付が一致してたら
-                    if(i === new Date(e.date).getDate() && selectMonth === new Date(e.date).getMonth()){
-                        incomeTotal += e.amount;      // 金額を足す
-                    }
-                });
+                let incomeTotal = countDayAmount(income, selectDate.getFullYear(), selectDate.getMonth(), i);
 
                 // 支出
-                expenses.forEach(e => {
-                    // 日付が一致してたら
-                    if(i === new Date(e.date).getDate() && selectMonth === new Date(e.date).getMonth()){
-                        expensesTotal += e.amount;    // 金額を足す
-                    }
-                });
+                let expensesTotal = countDayAmount(expenses, selectDate.getFullYear(), selectDate.getMonth(), i);
 
                 incomeSeries.push(incomeTotal);
                 expensesSeries.push(expensesTotal);

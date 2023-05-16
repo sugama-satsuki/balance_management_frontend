@@ -59,3 +59,10 @@ export type MonthlyDataType = {
     firstMonthTotal: number, 
     thisMonthTotal: number
 }
+
+
+export type ListItemDataType = {
+    title: string, 
+    description?: string, 
+    icon: React.ReactNode
+}

@@ -22,7 +22,9 @@ import ListWithIcon from "../../molecules/list/list";
 
 import { ja } from "date-fns/locale";
 import { format } from "date-fns";
-import { DataStateType } from "../../../types/global";
+import { DataStateType, ListItemDataType } from "../../../types/global";
+import { countDayAmount } from "../../../common/countAmount";
+import { pickOutDayData } from "../../../common/pickOutData";
 
 
 type PropsType = {
@@ -36,25 +38,46 @@ export default function CalendarArea(props: PropsType) {
     const { iData, eData } = props;
 
 
-    // テスト表示データ
-    const listItems:{title: string, description?: string, icon: React.ReactNode}[] = [
+    // state定義
+    const [listItems, setListItems] = React.useState<ListItemDataType[]> ([
         {title: "本買った", description: "¥5,000", icon: <MenuBookIcon fontSize="small"/>},
         {title: "給料", description: "¥400,000", icon: <CreditCardIcon fontSize="small"/>},
         {title: "だんご食べた", description: "¥2,500", icon: <KebabDiningIcon fontSize="small"/>}
-    ];
+    ]);
+    const [listDate, setListDate] = React.useState<Date>(new Date());
 
+
+    /*
+     * 関数定義
+     */ 
     const changeCalendar = (val: "partial" | "shallow" | "finish" | null | undefined, selectionState: PickerSelectionState | undefined) => {
 
         console.log(val, selectionState);
 
-        let data = [];
+        let valDate = val !== null && val !== undefined ? new Date(val): new Date();
 
-        iData.forEach((val, index) => {
-            if(val.createDate)
-            data.push(val)
-        })
+        let data:DataStateType = pickOutDayData(
+                                    iData, 
+                                    valDate.getFullYear(), 
+                                    valDate.getMonth(),
+                                    valDate.getDate()
+                                );
 
+        setListItems(createItemData(data));
+        setListDate(valDate);
+        
     }
+
+
+    // TODO:リストコンポーネントに渡す値を作る
+    const createItemData = (dataList: DataStateType): ListItemDataType[] => {
+
+        let result: ListItemDataType[] = [];
+
+        return result;
+    }
+
+
 
     return (
         <div className={styles.flexItemWrapper}>
@@ -76,7 +99,7 @@ export default function CalendarArea(props: PropsType) {
                     </Grid>
                     <Grid xs={4} sm={4} md={8}>
                         <MyCard darkMode={false} width="100%">
-                            <ListWithIcon items={listItems} showHeader={true} headerData={format(new Date(), 'yyyy/MM/dd') + 'の収支一覧'}/>
+                            <ListWithIcon items={listItems} showHeader={true} headerData={format(listDate, 'yyyy/MM/dd') + 'の収支一覧'}/>
                         </MyCard>
                     </Grid>
                 </Grid>

@@ -4,6 +4,9 @@ import React from "react";
 /* import css */ 
 import styles from './reportArea.module.css';
 
+/* import common */ 
+import { countDayAmount, countMonthAmount } from "../../../common/countAmount";
+
 /* import atoms */ 
 import Line from "../../atoms/line/Line";
 import MyCard from '../../atoms/card/card';
@@ -26,7 +29,6 @@ import CategoryIcon from '@mui/icons-material/Category';
 import { DataSeriesType, DataStateType, IdWithTextType, MonthlyDataType, ReportDatesType } from "../../../types/global";
 
 import { format } from "date-fns";
-import axios from "axios";
 
 
 type PropsType = {
@@ -58,7 +60,6 @@ export default function ReportArea(props: PropsType) {
 
     const [monthlyIncome, setMonthlyIncome] = React.useState<MonthlyDataType>({firstMonthTotal: 0, thisMonthTotal: 0});
     const [monthlyExpenses, setMonthlyExpenses] = React.useState<MonthlyDataType>({firstMonthTotal: 0, thisMonthTotal: 0});
-
     const [incomeData, setIncomeData] = React.useState<DataStateType>(iData);
     const [expensesData, setExpensesData] = React.useState<DataStateType>(eData);
     
@@ -165,56 +166,12 @@ export default function ReportArea(props: PropsType) {
     }
 
 
-    // 一致してたら、渡した条件に一致する時のみカウントする関数
-    const countMonthAmount = (amountList: DataStateType, terms1: number, terms2: number, countFirstMonth: boolean, terms3?: number, terms4?: number) => {
-
-        let total = 0;
-        let total2 = 0;
-        let result:number[] = [];
-
-        amountList.forEach((val, i) => {
-            let valDate  = new Date(val.date);
-
-            // 当月
-            if(valDate.getFullYear() === terms1 && valDate.getMonth() === terms2) {
-                total += val.amount;
-            }
-            // 先月
-            if(countFirstMonth){
-                if(valDate.getFullYear() === terms3 && valDate.getMonth() === terms4) {
-                    total2 += val.amount;
-                }
-            }
-        })
-        result.push(total);
-        if(countFirstMonth) result.push(total2);
-
-        return result;
-    }
 
 
-
-    // 日毎の収支合計を返す関数
-    const countDayAmount = (amountList: DataStateType, termsYear: number, termsMonth: number, termsDate: number) => {
-
-        let total = 0;
-
-        amountList.forEach((val, i) => {
-            let valDate  = new Date(val.date);
-            // 同じ月だったら
-            if(valDate.getFullYear() === termsYear && valDate.getMonth() === termsMonth && valDate.getDate() === termsDate) {
-                total += val.amount;
-            }
-            
-        })
-
-        return total;
-    }
-
-
-
-
-    // チャート用の月毎データ、日毎データにまとめる処理
+    /* 
+     * チャート用の月毎データ、
+     * 日毎データにまとめる処理 
+     * */
     const createChartData = (income:DataStateType, expenses:DataStateType, isMonth:boolean, reportDate:ReportDatesType) => {
 
         let incomeSeries: number[] = [];

@@ -12,6 +12,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import KebabDiningIcon from '@mui/icons-material/KebabDining';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SavingsIcon from '@mui/icons-material/Savings';
 
 /* import atoms */ 
 import MyCard from "../../atoms/card/card";
@@ -23,7 +25,8 @@ import ListWithIcon from "../../molecules/list/list";
 import { ja } from "date-fns/locale";
 import { format } from "date-fns";
 import { DataStateType, ListItemDataType } from "../../../types/global";
-import { countDayAmount } from "../../../common/countAmount";
+
+/* */ 
 import { pickOutDayData } from "../../../common/pickOutData";
 
 
@@ -54,14 +57,14 @@ export default function CalendarArea(props: PropsType) {
 
         let valDate = val !== null && val !== undefined ? new Date(val): new Date();
 
+        let allData: DataStateType[] = eData.concat(iData);
+
         let data:DataStateType = pickOutDayData(
-                                    iData, 
+                                    allData, 
                                     valDate.getFullYear(), 
                                     valDate.getMonth(),
                                     valDate.getDate()
                                 );
-        console.log(iData, data);
-        console.log(createItemData(data))
 
         setListItems(createItemData(data));
         setListDate(valDate);
@@ -76,7 +79,7 @@ export default function CalendarArea(props: PropsType) {
             return ({
                 title: val.title, 
                 description: '¥' + val.amount.toLocaleString(), 
-                icon: <MenuBookIcon fontSize="small"/>
+                icon: val.isTypeIncome ? <SavingsIcon fontSize="small"/> : <ShoppingCartIcon fontSize="small"/>
             });
         })
 

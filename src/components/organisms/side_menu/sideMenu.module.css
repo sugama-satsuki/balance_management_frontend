@@ -33,8 +33,9 @@
     position: absolute;
     top: 1rem;
     right: 1rem;
-    width: 2rem;
-    height: 2rem;
+    width: var(--my-size-menu-icon);
+    height: var(--my-size-menu-icon);
+    box-sizing: border-box;
 }
 .sideMenu .sideMenuInnerWrapper .menuIcon span{
     height: 0.2rem;
@@ -47,7 +48,7 @@
 
 /* メニュー開け閉めボタン（閉じてる時） */
 .sideMenuClose .sideMenuInnerWrapper .menuIcon{
-    right: calc((3.5rem - 2rem)/2);
+    right: calc((var(--my-size-sideMenuCloseW) - var(--my-size-menu-icon))/2);
 }
 .sideMenuClose .sideMenuInnerWrapper .menuIcon span{
     transform: rotate(0deg);

@@ -30,14 +30,8 @@ export default function MySideMenu(props: Props) {
     const { logo, userName, userIcon, isOpen, onClickMenuIcon, menuNumber } = props;
 
     // // stateの宣言
-    // const [isOpen, setIsOpen] = useState(false);
     const [menuState, setMenuState] = React.useState(menuNumber);
 
-
-    // // アクション宣言
-    // function onClickMenuIcon() {
-    //     setIsOpen(!isOpen)
-    // }
 
     const onClickMenuButton = (e: React.MouseEvent<HTMLAnchorElement>, num:number) => {
         setMenuState(num);

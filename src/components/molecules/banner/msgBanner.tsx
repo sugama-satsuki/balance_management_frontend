@@ -8,7 +8,7 @@ import styles from './msgBanner.module.css';
 import WarningIcon from '@mui/icons-material/Warning';
 import InfoIcon from '@mui/icons-material/Info';
 
-import { fields } from '../../../consts/fields';
+import { fields } from '../../../assets/fields';
 import { MsgType } from '../../../types/global';
 
 

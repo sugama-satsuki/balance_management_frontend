@@ -10,7 +10,7 @@ import Spacer from '../../atoms/spacer/spacer';
 
 /* import molecules */
 import MyTable from '../../molecules/table/table';
-import MsgBanner from '../../molecules/bunner/msgBanner';
+import MsgBanner from '../../molecules/banner/msgBanner';
 
 /* import organisms */
 import AddDataPopup from '../../organisms/add_data_popup/addDataPopup';
@@ -30,7 +30,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { MsgType, DataStateType } from '../../../types/global';
 
-import { fields } from '../../../consts/fields';
+import { fields } from '../../../assets/fields';
 
 
 // 型宣言
@@ -127,7 +127,8 @@ export default function ListPage() {
                     {label: val.label, value: val.category_key}
                 )
             })
-        ]);
+        ]
+        );
 
         setUpdateFlag(false);
     }
@@ -171,16 +172,17 @@ export default function ListPage() {
     }
 
 
-
-    const setData = (data: DataStateType) => {
-        setSelectData([displayDataState, data[2].props.text, data[3], data[4], new Date(data[5]), data[6]]);
-    }
-
     // セル押下時処理
     const onClickTableRow = (data: DataStateType) => {
+        console.log('data:', data[2].props.text, data[3], data[4], new Date(data[5]), data[6]);
         setUpdateFlag(true);
-        setData(data);
+        setSelectData((selectData) => {
+            return [displayDataState, data[2].props.text, data[3], data[4], new Date(data[5]), data[6]]
+        });
+        console.log('selectData:', selectData);
         setOpenFlag(true);
+
+        return [selectData, data];
     }
 
 
@@ -273,7 +275,6 @@ export default function ListPage() {
 
     return(
         <BaseLayout menuNumber={2} pageTitle={'一覧'}>
-            {/* TODO: エラーメッセージ、エラータイプの受け渡し方法考える */}
             <MsgBanner msgType={ showMsgBnr[1] === 0 || showMsgBnr[1] === 1 || showMsgBnr[1] === 2 ? 's' : 'e'} 
                 msgNum={ showMsgBnr[1] } show={ showMsgBnr[0] }
                 onClickFunc={(e:any) => {setShowMsgBnr([false, 0])}}

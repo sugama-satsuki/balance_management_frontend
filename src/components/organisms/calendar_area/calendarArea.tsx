@@ -27,7 +27,7 @@ import { format } from "date-fns";
 import { DataStateType, ListItemDataType } from "../../../types/global";
 
 /* */ 
-import { pickOutDayData } from "../../../common/pickOutData";
+import { pickOutDayData } from "../../../utils/pickOutData";
 
 
 type PropsType = {

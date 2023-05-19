@@ -5,7 +5,7 @@ import React from "react";
 import styles from './reportArea.module.css';
 
 /* import common */ 
-import { countDayAmount, countMonthAmount } from "../../../common/countAmount";
+import { countDayAmount, countMonthAmount } from "../../../utils/countAmount";
 
 /* import atoms */ 
 import Line from "../../atoms/line/Line";

@@ -42,13 +42,26 @@ export default function CalendarArea(props: PropsType) {
 
 
     // state定義
-    const [listItems, setListItems] = React.useState<ListItemDataType[]> ([
-        {title: "本買った", description: "¥5,000", icon: <MenuBookIcon fontSize="small"/>},
-        {title: "給料", description: "¥400,000", icon: <CreditCardIcon fontSize="small"/>},
-        {title: "だんご食べた", description: "¥2,500", icon: <KebabDiningIcon fontSize="small"/>}
-    ]);
+    const [listItems, setListItems] = React.useState<ListItemDataType[]> ([]);
     const [listDate, setListDate] = React.useState<Date>(new Date());
 
+    let allData: DataStateType[] = eData.concat(iData);
+
+    React.useEffect(() => {
+
+        let valDate = new Date();
+
+        let data:DataStateType = pickOutDayData(
+            allData, 
+            valDate.getFullYear(), 
+            valDate.getMonth(),
+            valDate.getDate()
+        );
+        
+        setListItems(createItemData(data));
+        setListDate(valDate);
+
+    }, [])
 
     /*
      * 関数定義
@@ -56,8 +69,6 @@ export default function CalendarArea(props: PropsType) {
     const changeCalendar = (val: "partial" | "shallow" | "finish" | null | undefined, selectionState: PickerSelectionState | undefined) => {
 
         let valDate = val !== null && val !== undefined ? new Date(val): new Date();
-
-        let allData: DataStateType[] = eData.concat(iData);
 
         let data:DataStateType = pickOutDayData(
                                     allData, 

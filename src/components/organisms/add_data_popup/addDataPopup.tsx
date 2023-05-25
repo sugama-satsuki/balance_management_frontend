@@ -83,17 +83,22 @@ export default function AddDataPopup(props: PropsType) {
         ]
     );
 
-    const [selectType, setSelectType] = useState<string>(data[0]);
-    const [selectCategory, setCategory] = useState<string>(data[1]);
-    const [inputTitle, setTitle] = useState<string>(data[2]);
-    const [inputAmount, setAmount] = useState<number>(data[3]);
-    const [inputDate, setInputDate] = useState<Date>(data[4]);
-    const [inputMemo, setMemo] = useState<string>(data[5]);
+    const [selectType, setSelectType] = useState<string>('');
+    const [selectCategory, setCategory] = useState<string>('');
+    const [inputTitle, setTitle] = useState<string>('');
+    const [inputAmount, setAmount] = useState<number>(0);
+    const [inputDate, setInputDate] = useState<Date>(new Date());
+    const [inputMemo, setMemo] = useState<string>('');
 
 
     useEffect(() => {
-
-    }, [])
+        setSelectType(data[0]);
+        setCategory(data[1]);
+        setTitle(data[2]);
+        setAmount(data[3]);
+        setInputDate(data[4]);
+        setMemo(data[5]);
+    }, [data])
 
     /* --- stateの更新処理 --- */
 
@@ -127,7 +132,7 @@ export default function AddDataPopup(props: PropsType) {
 
     const onChangeDate= (value: Date, selectionState?: PickerSelectionState | undefined) => {
         // 日付
-        setInputDate((value) => {return value});
+        setInputDate(() => {return value});
     }
 
     const onChangeMemo = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

@@ -59,6 +59,8 @@ type CategoryDataType = {label: string, value: string}[];
 
 export default function ListPage() {
 
+    const initData = ['income', 0, '', 0, new Date(), ''];
+
     const [incomeData, setIncomeData] = useState<DataStateType[]>([]);
     const [expensesData, setExpensesData] = useState<DataStateType[]>([]);
     const [displayDataState, setDisplayDataState] = useState<string>('income');
@@ -66,7 +68,7 @@ export default function ListPage() {
 
     const [openFlag, setOpenFlag] = useState<boolean>(false);
 
-    const [selectData, setSelectData] = useState<DataStateType>(['income', 0, '', 0, new Date(), '']);
+    const [selectData, setSelectData] = useState<DataStateType>(initData);
 
     const [updateFlag, setUpdateFlag] = useState<boolean>(false);
 
@@ -174,15 +176,15 @@ export default function ListPage() {
 
     // セル押下時処理
     const onClickTableRow = (data: DataStateType) => {
-        console.log('data:', data[2].props.text, data[3], data[4], new Date(data[5]), data[6]);
-        setUpdateFlag(true);
         setSelectData((selectData) => {
             return [displayDataState, data[2].props.text, data[3], data[4], new Date(data[5]), data[6]]
         });
+
+        setUpdateFlag(true);
         console.log('selectData:', selectData);
         setOpenFlag(true);
 
-        return [selectData, data];
+        // return [selectData, data];
     }
 
 
@@ -270,6 +272,7 @@ export default function ListPage() {
     // ポップアップ表示/非表示
     const changePopup = () => {
         setOpenFlag(!openFlag);
+        setSelectData(initData);
     }
 
 
@@ -298,7 +301,9 @@ export default function ListPage() {
                         </FormControl>
                     </Box>
                     <div className={styles.btnWrapper}>
-                        <div className={styles.marginR_s}><SquareButton text='新規追加' secondary onClick={changePopup}/></div>
+                        <div className={styles.marginR_s}>
+                            <SquareButton text='新規追加' secondary onClick={changePopup}/>
+                        </div>
                         <SquareButton text='削除' onClick={onClickDeleteData}/>
                     </div>
                 </div>
@@ -311,7 +316,7 @@ export default function ListPage() {
                     onClickCloseBtn={changePopup} 
                     reloadData={fetchData} 
                     data={selectData} 
-                    isUpdate={updateFlag} 
+                    isUpdate={updateFlag}
                 />
                 
                 <Spacer size='s'>
